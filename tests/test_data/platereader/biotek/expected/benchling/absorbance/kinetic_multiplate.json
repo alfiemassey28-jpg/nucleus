@@ -1,0 +1,422 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "Blank OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Lagtime [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            },
+            "Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            },
+            "R-Squared [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            },
+            "t at Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:29"
+            }
+        },
+        "rows": 384
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "Blank OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Lagtime [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            },
+            "Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            },
+            "R-Squared [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            },
+            "t at Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 2",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:10:54"
+            }
+        },
+        "rows": 384
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "Blank OD600:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            }
+        },
+        "rows": 576
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Lagtime [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            },
+            "Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            },
+            "R-Squared [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            },
+            "t at Max V [Blank OD600:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 3",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "OD600",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2022-10-10 21:11:06"
+            }
+        },
+        "rows": 384
+    }
+]

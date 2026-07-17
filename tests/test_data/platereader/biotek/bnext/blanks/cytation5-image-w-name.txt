@@ -1,0 +1,44 @@
+
+
+Software Version	3.16.10
+
+
+
+Experiment File Path:	
+Protocol File Path:	
+
+
+
+Plate Number	Plate 1
+Date	???
+Time	???
+Reader Type:	
+Reader Serial Number:	
+Reading Type	???
+
+Procedure Details
+
+Plate Type	96 WELL PLATE (Use plate lid)
+Eject plate on completion	
+Read	image-step
+	Image Single Image
+	Full Plate
+	Objective: 4x
+	Field of View: Full WFOV
+	Channel 1:  377/647 377,647
+	    Auto exposure: Random
+	    Target exposure percentage: 75
+	    Skip percentage: 0.1
+	    Use default integration threshold
+	    Autofocus with optional scan
+	    Minimum focus metric ratio: 3
+	    Scan distance: 600 µm
+	    Scan increment: 50 µm
+	    Minimum focus delta: 8
+	    Percent of capture exposure for focus: 75
+	    Offset from bottom of well: 0 µm
+	    Vibration CV threshold: 0.01
+	    Images to average: 1
+	Horizontal offset: 0 µm, Vertical offset: 0 µm
+	Delay after plate movement: 300 msec
+

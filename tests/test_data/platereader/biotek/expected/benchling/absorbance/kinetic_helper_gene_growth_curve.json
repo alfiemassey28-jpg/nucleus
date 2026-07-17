@@ -1,0 +1,104 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Temperature",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "600": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 2",
+                "Plate Type": "Generic_Plate_123",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "123456",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:01"
+            }
+        },
+        "rows": 7464
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Lagtime [600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 2",
+                "Plate Type": "Generic_Plate_123",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "123456",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:01"
+            },
+            "Max V [600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 2",
+                "Plate Type": "Generic_Plate_123",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "123456",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:01"
+            },
+            "R-Squared [600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 2",
+                "Plate Type": "Generic_Plate_123",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "123456",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:01"
+            },
+            "t at Max V [600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 2",
+                "Plate Type": "Generic_Plate_123",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "123456",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:01"
+            }
+        },
+        "rows": 96
+    }
+]

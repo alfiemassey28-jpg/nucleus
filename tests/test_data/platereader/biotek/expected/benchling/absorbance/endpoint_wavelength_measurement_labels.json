@@ -1,0 +1,48 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "280": {
+                "Absorbance Wavelength (nm)": "280",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "1234567",
+                "Reader Type": "Epoch",
+                "Start Time": "2025-01-02 12:30:25"
+            },
+            "325": {
+                "Absorbance Wavelength (nm)": "325",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "1234567",
+                "Reader Type": "Epoch",
+                "Start Time": "2025-01-02 12:30:25"
+            }
+        },
+        "rows": 192
+    }
+]

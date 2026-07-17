@@ -1,0 +1,40 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Absorbance at 1 cm",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Pathlength Correction",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "260:260": {
+                "Absorbance Wavelength (nm)": "260",
+                "Plate ID": "Plate 1",
+                "Plate Type": "Generic 96 UV",
+                "Read Modality": "Absorbance",
+                "Read Name": "260",
+                "Reader ID": "12345678",
+                "Reader Type": "Generic Reader",
+                "Start Time": "2023-09-15 12:30:00"
+            }
+        },
+        "rows": 12
+    }
+]

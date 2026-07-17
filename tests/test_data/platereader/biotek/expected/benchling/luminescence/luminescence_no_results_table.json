@@ -1,0 +1,50 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Optics",
+            "End Mode",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "User Name",
+            "Well"
+        ],
+        "reads": {
+            "Lum": {
+                "Emission Optics": "filter",
+                "Excitation Optics": "filter",
+                "Gain": "135",
+                "Plate ID": "Plate 1",
+                "Plate Type": "384 WELL PLATE (Use plate lid)",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "4.5 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Read 1",
+                "Reader ID": "1234",
+                "Reader Type": "Cytation7",
+                "Start Time": "2024-07-09 16:15:21"
+            }
+        },
+        "rows": 384
+    }
+]

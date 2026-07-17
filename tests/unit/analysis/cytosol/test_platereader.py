@@ -1,27 +1,27 @@
 import pytest
 
-PLATEMAP_CSV_DATA_PATH = "tests/test_data/platemap.csv"
-PLATEMAP_XLSX_DATA_PATH = "tests/test_data/platemap.xlsx"
+PLATEMAP_CSV_DATA_PATH = "tests/test_data/platereader/legacy/platemap.csv"
+PLATEMAP_XLSX_DATA_PATH = "tests/test_data/platereader/legacy/platemap.xlsx"
 
 BIOTEK_SYNERGY_KINETIC_DATA_PATH = (
-    "tests/test_data/biotek_synergy_fluorescence_kinetics.txt"
+    "tests/test_data/platereader/biotek/bnext/biotek_synergy_fluorescence_kinetics.txt"
 )
 CYTATION_KINETIC_DATA_PATH = (
-    "tests/test_data/cytation_fluorescence_kinetics.txt"
+    "tests/test_data/platereader/biotek/bnext/cytation_fluorescence_kinetics.txt"
 )
 ENVISION_KINETIC_DATA_PATH = (
-    "tests/test_data/envision_fluorescence_kinetics.csv"
+    "tests/test_data/platereader/legacy/envision_fluorescence_kinetics.csv"
 )
 
-DNA_SWEEP_DATA_PATH = "tests/test_data/cytation_dna_sweep.txt"
-DNA_SWEEP_PLATEMAP_PATH = "tests/test_data/platemap.csv"
-SYNTHETIC_DATA_PATH = "tests/test_data/platereader-test-data.csv"
-BIOTEK_CDK_MULTIPLATE_DATA_PATH = "tests/test_data/biotek_cdk_multiplate.txt"
+DNA_SWEEP_DATA_PATH = "tests/test_data/platereader/biotek/bnext/cytation_dna_sweep.txt"
+DNA_SWEEP_PLATEMAP_PATH = "tests/test_data/platereader/legacy/platemap.csv"
+SYNTHETIC_DATA_PATH = "tests/test_data/platereader/legacy/platereader-test-data.csv"
+BIOTEK_CDK_MULTIPLATE_DATA_PATH = "tests/test_data/platereader/legacy/biotek_cdk_multiplate.txt"
 
 
 def test_read_envision():
     import pandas as pd
-    from cdk.analysis.cytosol.platereader import read_envision
+    from cdk.instruments.platereader.legacy import read_envision
 
     data = read_envision(ENVISION_KINETIC_DATA_PATH)
     print(f"Columns: {data.columns}")
@@ -37,7 +37,7 @@ def biotek_data_path(request):
 
 
 def test_read_biotek(biotek_data_path):
-    from cdk.analysis.cytosol.platereader import read_cytation
+    from cdk.instruments.platereader.legacy import read_cytation
     import pandas as pd
 
     data = read_cytation(biotek_data_path)
@@ -46,7 +46,7 @@ def test_read_biotek(biotek_data_path):
 
 def test_read_cytation():
     import pandas as pd
-    from cdk.analysis.cytosol.platereader import read_cytation
+    from cdk.instruments.platereader.legacy import read_cytation
 
     data = read_cytation(CYTATION_KINETIC_DATA_PATH)
     print(f"Columns: {data.columns}")
@@ -55,7 +55,7 @@ def test_read_cytation():
 
 
 def test_read_cytation_temperature_column():
-    from cdk.analysis.cytosol.platereader import read_cytation
+    from cdk.instruments.platereader.legacy import read_cytation
 
     data = read_cytation(
         DNA_SWEEP_DATA_PATH
@@ -65,7 +65,7 @@ def test_read_cytation_temperature_column():
 
 @pytest.fixture(params=["envision", "cytation"])
 def platereader_data(request):
-    from cdk.analysis.cytosol.platereader import read_envision, read_cytation
+    from cdk.instruments.platereader.legacy import read_envision, read_cytation
 
     if request.param == "envision":
         return read_envision(ENVISION_KINETIC_DATA_PATH)
@@ -123,7 +123,7 @@ def platereader_data_file(request):
 
 def test_load_platereader_data(platereader_data_file):
     import pandas as pd
-    from cdk.analysis.cytosol.platereader import load_platereader_data
+    from cdk.instruments.platereader.legacy import load_platereader_data
 
     data = load_platereader_data(platereader_data_file)
 
@@ -136,7 +136,7 @@ def platemap_data_files(request):
 
 
 def test_read_platemap(platemap_data_files):
-    from cdk.analysis.cytosol.platereader import read_platemap
+    from cdk.instruments.platereader.legacy import read_platemap
 
     platemap = read_platemap(platemap_data_files)
     assert platemap.shape == (16, 5)
@@ -144,7 +144,7 @@ def test_read_platemap(platemap_data_files):
 
 def test_read_platemap_normalizes_wells():
     import pandas as pd
-    from cdk.analysis.cytosol.platereader import read_platemap
+    from cdk.instruments.platereader.legacy import read_platemap
 
     platemap_check = pd.read_csv(PLATEMAP_CSV_DATA_PATH)
     assert (
@@ -157,7 +157,7 @@ def test_read_platemap_normalizes_wells():
 
 @pytest.fixture()
 def platemap_data(platemap_data_files):
-    from cdk.analysis.cytosol.platereader import read_platemap
+    from cdk.instruments.platereader.legacy import read_platemap
 
     return read_platemap(platemap_data_files)
 
@@ -172,7 +172,7 @@ def test_platemap_does_not_have_Float64_columns(platemap_data):
 def test_load_platereader_data_loads_platemap(
     platereader_data_file, platemap_data_files
 ):
-    from cdk.analysis.cytosol.platereader import load_platereader_data
+    from cdk.instruments.platereader.legacy import load_platereader_data
 
     data, platemap = load_platereader_data(
         platereader_data_file, platemap_data_files
@@ -184,7 +184,7 @@ def test_load_platereader_data_loads_platemap(
 
 
 def test_load_platereader_with_none_platemap(platereader_data_file):
-    from cdk.analysis.cytosol.platereader import load_platereader_data
+    from cdk.instruments.platereader.legacy import load_platereader_data
 
     data = load_platereader_data(platereader_data_file, None)
     assert data.shape[0] > 0
@@ -192,7 +192,7 @@ def test_load_platereader_with_none_platemap(platereader_data_file):
 
 @pytest.fixture
 def dna_sweep_data():
-    from cdk.analysis.cytosol.platereader import load_platereader_data
+    from cdk.instruments.platereader.legacy import load_platereader_data
 
     return load_platereader_data(
         DNA_SWEEP_DATA_PATH, DNA_SWEEP_PLATEMAP_PATH
@@ -200,7 +200,7 @@ def dna_sweep_data():
 
 
 def test_plot_plate(dna_sweep_data):
-    from cdk.analysis.cytosol.platereader import plot_plate
+    from cdk.instruments.platereader.legacy import plot_plate
 
     g = plot_plate(dna_sweep_data)
     assert g.axes.shape[0] > 0 and g.axes.shape[1] > 0
@@ -214,21 +214,21 @@ def synthetic_data():
 
 
 def test_blank_data_preserves_unblanked_data(synthetic_data):
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
 
     data = pr.blank_data(synthetic_data)
     assert "Data_unblanked" in data.columns
 
 
 def test_blank_data_adds_blank_column(synthetic_data):
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
 
     data = pr.blank_data(synthetic_data)
     assert "Data_blank" in data.columns
 
 
 # def test_blank_data_blanks(synthetic_data):
-#     import cdk.analysis.cytosol.platereader as pr
+#     import cdk.instruments.platereader.legacy as pr
 
 #     data = pr.blank_data(synthetic_data)
 #     assert "Data_blank" in data.columns
@@ -236,7 +236,7 @@ def test_blank_data_adds_blank_column(synthetic_data):
 
 def test_blank_data_blanks_data(synthetic_data):
     import pandas as pd
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
 
     data = pr.blank_data(synthetic_data.copy())
 
@@ -250,7 +250,7 @@ def test_blank_data_blanks_data(synthetic_data):
 
 
 def test_multiplate():
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
     import pandas as pd
 
     data = pr.read_biotek_cdk(BIOTEK_CDK_MULTIPLATE_DATA_PATH)
@@ -260,7 +260,7 @@ def test_multiplate():
 
 
 def test_multiplate_length_correct():
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
 
     data = pr.read_biotek_cdk(BIOTEK_CDK_MULTIPLATE_DATA_PATH)
     data_merge = pr.merge_plates(data)
@@ -269,7 +269,7 @@ def test_multiplate_length_correct():
 
 
 def test_multiplate_uses_first_plate_name():
-    import cdk.analysis.cytosol.platereader as pr
+    import cdk.instruments.platereader.legacy as pr
 
     data = pr.read_biotek_cdk(BIOTEK_CDK_MULTIPLATE_DATA_PATH)
     data_merge = pr.merge_plates(data)

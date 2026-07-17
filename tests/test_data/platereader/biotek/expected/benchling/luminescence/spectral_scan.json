@@ -1,0 +1,45 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Emission Optics",
+            "Emission Wavelength (nm)",
+            "Gain",
+            "Integration Time",
+            "Optics",
+            "Plate ID",
+            "Plate Type",
+            "Read",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Step",
+            "Stop",
+            "Well"
+        ],
+        "reads": {
+            "EM Spectrum": {
+                "Emission Optics": "monochromator",
+                "Emission Wavelength (nm)": "300",
+                "Gain": "200",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Height (mm)": "4.5 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Read 1",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy Neo2",
+                "Start Time": "2024-03-07 11:31:30"
+            }
+        },
+        "rows": 3
+    }
+]

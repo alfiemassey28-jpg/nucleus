@@ -1,0 +1,8 @@
+[meta]
+name = "discovery_plate_pipeline"
+
+[reaction]
+final_rxn_vol_ul = 5.0
+
+[files]
+samples_final_concs = "bounds_doe_n20.csv"

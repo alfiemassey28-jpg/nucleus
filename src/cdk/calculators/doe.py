@@ -8,23 +8,17 @@ import numpy as np
 import pandas as pd
 from scipy.stats import qmc
 
+from cdk.calculators.naming import format_reagent_column_name
+
 REQUIRED_BOUNDS_COLUMNS = {"Component", "Lower Bound", "Upper Bound"}
 
-
-def _format_reagent_column_name(reagent, unit=None):
-    reagent_name = str(reagent).strip()
-    if not reagent_name:
-        raise ValueError("Reagent name cannot be empty.")
-
-    if unit is None or pd.isna(unit):
-        return reagent_name
-
-    unit_name = str(unit).strip()
-    if not unit_name:
-        return reagent_name
-    if reagent_name.endswith(f" {unit_name}"):
-        return reagent_name
-    return f"{reagent_name} {unit_name}"
+# Canonical `Type` column values written by each generator. Importers
+# should reference these instead of hard-coding the string literals.
+TYPE_LHS = "lhs"
+TYPE_RATIO_SWEEP = "ratio_sweep"
+TYPE_STANDARDS = "standards"
+TYPE_CONTROL = "control"
+TYPE_EXTERNAL = "external"
 
 
 def load_bounds(df):
@@ -34,7 +28,7 @@ def load_bounds(df):
     names = df[component_col].astype(str).str.strip().tolist()
     if unit_col is not None:
         names = [
-            _format_reagent_column_name(reagent=name, unit=unit)
+            format_reagent_column_name(reagent=name, unit=unit)
             for name, unit in zip(names, df[unit_col])
         ]
     l_bounds = df["Lower Bound"].to_numpy(dtype=float)
@@ -43,7 +37,7 @@ def load_bounds(df):
 
 
 def generate_doe(n_samples, l_bounds, u_bounds, names, log_space=False, seed=42):
-    # LHS generator
+    """Latin Hypercube Sampling. Tags each row with ``Type = "lhs"``."""
     n_dims = len(l_bounds)
     if log_space:
         l_bounds = np.log(l_bounds)
@@ -59,6 +53,7 @@ def generate_doe(n_samples, l_bounds, u_bounds, names, log_space=False, seed=42)
         X = np.exp(X)
 
     samples = pd.DataFrame(X, columns=names)
+    samples.insert(0, "Type", TYPE_LHS)
     return samples
 
 
@@ -100,9 +95,16 @@ def generate_ratio_sweep(
         else:
             totals = np.linspace(T_min, T_max, n_total_concs)
         for T in totals:
-            rows.append({col_a: r * T / (1 + r), col_b: T / (1 + r)})
+            rows.append(
+                {
+                    "Type": TYPE_RATIO_SWEEP,
+                    col_a: r * T / (1 + r),
+                    col_b: T / (1 + r),
+                }
+            )
     df = pd.DataFrame(rows)
     df.index.name = "conditions"
+    df.insert(0, 'Name', df.index)
     return df
 
 
@@ -120,7 +122,7 @@ def generate_standards_dilution_curve(standards_spec):
 
     Returns:
         DataFrame with columns [Type, <compound_a> <unit_a>, ...],
-        Type="standard" for all rows, index named "conditions".
+        Type="standards" for all rows, index named "conditions".
     """
     compound_cols = [f"{s['compound']} {s['unit']}" for s in standards_spec]
     rows = []
@@ -135,33 +137,39 @@ def generate_standards_dilution_curve(standards_spec):
         else:
             concs = np.linspace(min_conc, max_conc, n_points)
         for c in concs:
-            row = {"Type": "standard"}
+            row = {"Type": TYPE_STANDARDS}
             for compound_col in compound_cols:
                 row[compound_col] = c if compound_col == col else 0.0
             rows.append(row)
 
     df = pd.DataFrame(rows)
     df.index.name = "conditions"
+    df.insert(0, 'Name', df.index)
     return df
 
 
-def concat_conditions_csvs(paths, default_type="doe"):
+def concat_conditions_csvs(paths, default_type=None):
     """Concatenate multiple conditions CSVs into one combined CSV.
 
-    Files without a ``Type`` column get
-    ``Type = default_type``. The ``conditions`` index is
-    reassigned 0..N-1 across all rows. Columns missing in some files are
-    filled with 0.0.
+    Every input file is expected to carry a ``Type`` column. If a file
+    is missing one, ``default_type`` is used as a fallback (CLI
+    workflows pass this explicitly); when ``default_type`` is ``None``,
+    a missing column raises. The ``conditions`` index is reassigned
+    0..N-1 across all rows. Columns missing in some files are filled
+    with 0.0.
 
     Args:
         paths: iterable of Path or str pointing to conditions CSVs.
-        default_type: value written into ``Type`` for any file
-            that does not already have that column.
+        default_type: value written into ``Type`` for any file that
+            does not already have that column. ``None`` (the default)
+            makes a missing ``Type`` column an error — appropriate for
+            programmatic callers like the orchestrator that always tag
+            their generators.
 
     Returns:
         DataFrame with ``conditions`` as the index name, ``Type`` as
-        the first column, followed by all other columns in order of first
-        appearance.
+        the first column, followed by all other columns in order of
+        first appearance.
     """
     dfs = []
     for path in paths:
@@ -169,6 +177,11 @@ def concat_conditions_csvs(paths, default_type="doe"):
         if "conditions" in df.columns:
             df = df.drop(columns=["conditions"])
         if "Type" not in df.columns:
+            if default_type is None:
+                raise ValueError(
+                    f"Conditions CSV is missing a `Type` column: {path}. "
+                    "Either add the column or pass default_type=<label>."
+                )
             df.insert(0, "Type", default_type)
         dfs.append(df)
 
@@ -254,7 +267,7 @@ def calc_titration_concs(samples, final_rxn):
     return samples
 
 
-def _validate_bounds_df(bounds_df):
+def validate_bounds_df(bounds_df):
     missing = REQUIRED_BOUNDS_COLUMNS - set(bounds_df.columns)
     if missing:
         missing_display = ", ".join(sorted(missing))
@@ -362,7 +375,7 @@ def _load_fixed_reagents_csv(csv_path):
         fixed_df = fixed_df.dropna(subset=[reagent_col, value_col])
         fixed_df[reagent_col] = fixed_df[reagent_col].astype(str).str.strip()
         fixed_df["formatted_reagent"] = fixed_df.apply(
-            lambda row: _format_reagent_column_name(
+            lambda row: format_reagent_column_name(
                 reagent=row[reagent_col],
                 unit=row[unit_col] if unit_col is not None else None,
             ),
@@ -406,7 +419,7 @@ def _load_fixed_reagents_csv(csv_path):
     for column, value in row.items():
         if pd.isna(value):
             continue
-        reagent = _format_reagent_column_name(reagent=column, unit=None)
+        reagent = format_reagent_column_name(reagent=column, unit=None)
         if not reagent:
             continue
         try:
@@ -435,7 +448,7 @@ def _resolve_fixed_reagents_path(raw_value, config_parent):
     return (config_parent / raw_path).resolve()
 
 
-def _load_fixed_reagents(raw_value, config_parent):
+def load_fixed_reagents(raw_value, config_parent):
     if raw_value is None:
         return {}
 
@@ -450,7 +463,7 @@ def _load_fixed_reagents(raw_value, config_parent):
     return _parse_fixed_reagents_literal(raw_value)
 
 
-def _append_fixed_reagents(samples, fixed_reagents):
+def append_fixed_reagents(samples, fixed_reagents):
     if not fixed_reagents:
         return samples
     overlapping = sorted(set(samples.columns).intersection(fixed_reagents))
@@ -464,7 +477,7 @@ def _append_fixed_reagents(samples, fixed_reagents):
     return samples
 
 
-def _apply_replicates(samples, replicates):
+def apply_replicates(samples, replicates):
     if replicates < 1:
         raise ValueError("replicates must be a positive integer.")
     if replicates > 1:
@@ -629,7 +642,7 @@ def _main_lhc(args):
         raise ValueError("n_samples must be a positive integer.")
 
     bounds_df = pd.read_csv(bounds_path)
-    _validate_bounds_df(bounds_df)
+    validate_bounds_df(bounds_df)
 
     names, l_bounds, u_bounds = load_bounds(bounds_df)
     samples = generate_doe(
@@ -641,12 +654,12 @@ def _main_lhc(args):
         seed=args.seed,
     )
 
-    fixed_reagents = _load_fixed_reagents(
+    fixed_reagents = load_fixed_reagents(
         raw_value=args.fixed_reagents,
         config_parent=bounds_path.parent,
     )
-    samples = _append_fixed_reagents(samples, fixed_reagents)
-    samples = _apply_replicates(samples, args.replicates)
+    samples = append_fixed_reagents(samples, fixed_reagents)
+    samples = apply_replicates(samples, args.replicates)
 
     output_name = args.output_name or (
         f"{bounds_path.stem}_doe_n{args.n_samples}.csv"
@@ -692,12 +705,12 @@ def _main_ratio_sweep(args):
         log_total=log_total,
     )
 
-    fixed_reagents = _load_fixed_reagents(
+    fixed_reagents = load_fixed_reagents(
         raw_value=cfg.get("fixed_reagents"),
         config_parent=config_path.parent,
     )
-    samples = _append_fixed_reagents(samples, fixed_reagents)
-    samples = _apply_replicates(samples, replicates)
+    samples = append_fixed_reagents(samples, fixed_reagents)
+    samples = apply_replicates(samples, replicates)
 
     n_conditions = len(samples) // replicates if replicates > 1 else len(samples)
     default_output_name = f"{col_a.split()[0]}_{col_b.split()[0]}_ratio_sweep_n{n_conditions}.csv"
@@ -739,7 +752,7 @@ def _main_standards_curve(args):
     replicates = int(cfg.get("replicates") or _last.get("replicates", 1))
 
     df = generate_standards_dilution_curve(standards_spec)
-    df = _apply_replicates(df, replicates)
+    df = apply_replicates(df, replicates)
 
     n_unique = len(df) // replicates if replicates > 1 else len(df)
     output_name = cfg.get("output_name") or _last.get("output_name") or f"standards_n{n_unique}.csv"

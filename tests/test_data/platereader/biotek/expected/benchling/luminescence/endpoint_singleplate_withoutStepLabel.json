@@ -1,0 +1,48 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Optics",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Lum": {
+                "Emission Optics": "filter",
+                "Excitation Optics": "filter",
+                "Gain": "135",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "4.5 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Read 1",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-02-15 11:04:43"
+            }
+        },
+        "rows": 96
+    }
+]

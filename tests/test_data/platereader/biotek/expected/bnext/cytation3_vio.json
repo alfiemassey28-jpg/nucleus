@@ -1,0 +1,156 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Temperature",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "577:577": {
+                "Absorbance Wavelength (nm)": "577",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "577",
+                "Reader ID": "130723A",
+                "Reader Type": "Cytation3",
+                "Start Time": "2026-04-27 18:38:52"
+            }
+        },
+        "rows": 4380
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Temperature",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "557:557": {
+                "Absorbance Wavelength (nm)": "557",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "557",
+                "Reader ID": "130723A",
+                "Reader Type": "Cytation3",
+                "Start Time": "2026-04-27 18:38:52"
+            }
+        },
+        "rows": 4380
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Temperature",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "585:585": {
+                "Absorbance Wavelength (nm)": "585",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "585",
+                "Reader ID": "130723A",
+                "Reader Type": "Cytation3",
+                "Start Time": "2026-04-27 18:38:52"
+            }
+        },
+        "rows": 4380
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Calibrate Before Read",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start",
+            "Start Time",
+            "Step",
+            "Stop",
+            "Well"
+        ],
+        "reads": {
+            "spectral scan:Spectrum": {
+                "Absorbance Wavelength (nm)": "487",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "spectral scan",
+                "Reader ID": "130723A",
+                "Reader Type": "Cytation3",
+                "Start Time": "2026-04-27 18:38:52"
+            }
+        },
+        "rows": 1320
+    }
+]

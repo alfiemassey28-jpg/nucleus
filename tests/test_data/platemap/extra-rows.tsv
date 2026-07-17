@@ -1,0 +1,139 @@
+Date	Experiment Name	Well	Name	Type	Dye	Conc (nM)	Rxn Volume (uL)	Fresh/Frozen	Neighboring wells?
+6/10/26	Pure timecourse fluorescein standards w GFP	A1	Sodum borate blank	Blank	Fluorescein	0	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A3	62.5 nM Fluorescein Standard	Standard	Fluorescein	62.5	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A5	125 nM Fluorescein Standard	Standard	Fluorescein	125	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A7	250 nM Fluorescein Standard	Standard	Fluorescein	250	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A9	500 nM Fluorescein Standard	Standard	Fluorescein	500	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A11	1 uM Fluorescein Standard	Standard	Fluorescein	1000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A13	2 uM Fluorescein Standard	Standard	Fluorescein	2000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	A15	2 uM Fluorescein Standard	Standard	Fluorescein	4000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B1	Sodum borate blank	Blank	Fluorescein	0	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B3	62.5 nM Fluorescein Standard	Standard	Fluorescein	62.5	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B5	125 nM Fluorescein Standard	Standard	Fluorescein	125	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B7	250 nM Fluorescein Standard	Standard	Fluorescein	250	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B9	500 nM Fluorescein Standard	Standard	Fluorescein	500	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B11	1 uM Fluorescein Standard	Standard	Fluorescein	1000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B13	2 uM Fluorescein Standard	Standard	Fluorescein	2000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	B15	2 uM Fluorescein Standard	Standard	Fluorescein	4000	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	D1	Sodum borate blank	Blank	Fluorescein	0	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D3	62.5 nM Fluorescein Standard	Standard	Fluorescein	62.5	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D5	125 nM Fluorescein Standard	Standard	Fluorescein	125	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D7	250 nM Fluorescein Standard	Standard	Fluorescein	250	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D9	500 nM Fluorescein Standard	Standard	Fluorescein	500	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D11	1 uM Fluorescein Standard	Standard	Fluorescein	1000	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D13	2 uM Fluorescein Standard	Standard	Fluorescein	2000	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	D15	2 uM Fluorescein Standard	Standard	Fluorescein	4000	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F1	Sodum borate blank	Blank	Fluorescein	0	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F3	62.5 nM Fluorescein Standard	Standard	Fluorescein	62.5	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F5	125 nM Fluorescein Standard	Standard	Fluorescein	125	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F7	250 nM Fluorescein Standard	Standard	Fluorescein	250	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F9	500 nM Fluorescein Standard	Standard	Fluorescein	500	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F11	1 uM Fluorescein Standard	Standard	Fluorescein	1000	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F13	2 uM Fluorescein Standard	Standard	Fluorescein	2000	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	F15	2 uM Fluorescein Standard	Standard	Fluorescein	4000	10	Frozen	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	H1	Tris blank	Blank	GFP	0	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H3	56 nM GFP (1.6 ug/ml)	Sample	GFP	55.8	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H5	112 nM GFP (3.1 ug/ml)	Sample	GFP	111.6	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H7	223 nM GFP (6.3 ug/ml)	Sample	GFP	223.2	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H9	446 nM GFP (12.5 ug/ml)	Sample	GFP	446.4	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H11	893 nM GFP (25 ug/ml)	Sample	GFP	892.8	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H13	1.8 uM GFP (50 ug/ml)	Sample	GFP	1786	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	H15	3.6 uM GFP (100 ug/ml)	Sample	GFP	3571	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I1	Tris blank	Blank	GFP	0	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I3	56 nM GFP (1.6 ug/ml)	Sample	GFP	55.8	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I5	112 nM GFP (3.1 ug/ml)	Sample	GFP	111.6	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I7	223 nM GFP (6.3 ug/ml)	Sample	GFP	223.2	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I9	446 nM GFP (12.5 ug/ml)	Sample	GFP	446.4	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I11	893 nM GFP (25 ug/ml)	Sample	GFP	892.8	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I13	1.8 uM GFP (50 ug/ml)	Sample	GFP	1786	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	I15	3.6 uM GFP (100 ug/ml)	Sample	GFP	3571	10	Fresh	Neighboring
+6/10/26	Pure timecourse fluorescein standards w GFP	K1	Tris blank	Blank	GFP	0	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K3	56 nM GFP (1.6 ug/ml)	Sample	GFP	55.8	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K5	112 nM GFP (3.1 ug/ml)	Sample	GFP	111.6	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K7	223 nM GFP (6.3 ug/ml)	Sample	GFP	223.2	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K9	446 nM GFP (12.5 ug/ml)	Sample	GFP	446.4	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K11	893 nM GFP (25 ug/ml)	Sample	GFP	892.8	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K13	1.8 uM GFP (50 ug/ml)	Sample	GFP	1786	10	Fresh	Isolated
+6/10/26	Pure timecourse fluorescein standards w GFP	K15	3.6 uM GFP (100 ug/ml)	Sample	GFP	3571	10	Fresh	Isolated
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									

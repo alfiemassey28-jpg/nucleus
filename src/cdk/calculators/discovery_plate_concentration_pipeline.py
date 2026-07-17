@@ -1,81 +1,68 @@
 """
 Discovery Plate Concentration Pipeline
-=====================================
+======================================
 
-Purpose
--------
-Compute:
+Computes the per-well pipetting plan for a discovery-plate experiment:
+
 1. Base master mix recipe from minimum final concentrations across conditions.
-2. Per-condition titration concentrations and titration volumes.
+2. Per-condition titration concentrations and volumes.
 3. Labcraft-ready concentration table (no volume columns).
 
-Required inputs (in --experiment-dir)
--------------------------------------
-- samples_final_concs.csv
-  - One row per condition.
-  - Concentration columns must be named: "<reagent> <unit>"
-    Example: "magnesium_acetate mM"
-  - Do not include buffer reagent (default "water").
-- reagents.csv
-  - Must include: reagent, stock_conc, units
-  - Buffer reagent must exist in this file.
-- calculator_params.toml (or .py)
-  - Must include: final_rxn_vol_ul
-  - Common optional settings:
-    pipetting_scalar, min_pipetting_vol_ul, conc_decimals, vol_decimals,
-    buffer_reagent, use_base_master_mix, exclude_from_base_reagents,
-    add_buffer_to_base_master_mix, add_well_ids, debug_constraints,
-    fixed_reagents, replicates
-    If `use_base_master_mix = false`, base master mix generation is disabled and all
-    reagents are treated as fully titrated.
-  - Optional override:
-    samples_final_concs_file (defaults to "samples_final_concs.csv")
-  - Optional override:
-    reagents_file (defaults to "reagents.csv")
-  - Optional fixed reagent input:
-    fixed_reagents as CSV path or JSON/Python dict string
-  - Optional replicate expansion:
-    replicates (default 1)
+Inputs (in ``--experiment-dir``)
+--------------------------------
+- ``experiment.toml`` — the unified config. ``[reaction].final_rxn_vol_ul`` is
+  the only required field; everything else falls back to documented defaults.
+  See ``docs/discovery_plate_pipeline.md`` and
+  ``cdk.calculators.experiment_config`` for the full schema.
+- The conditions CSV referenced by ``[files].samples_final_concs`` — one row
+  per condition with concentration columns named ``"<reagent> <unit>"``
+  (e.g. ``magnesium_acetate mM``).
+- ``reagents.csv`` — must include ``reagent``, ``stock_conc``, ``units`` and
+  contain the buffer reagent.
+- Optional ``[files].fixed`` CSV (or inline mapping) for per-reaction fixed
+  reagents.
 
 Run
 ---
-# Params file is optional. If omitted, the pipeline auto-detects a valid
-# `.toml` or `.py` config in `--experiment-dir` (prefers calculator_params.*).
-python3 discovery_plate_concentration_pipeline.py --experiment-dir <your experiment directory>
+::
 
-# Optional explicit params file:
-#   --params-file calculator_params.toml
+    python3 discovery_plate_concentration_pipeline.py --experiment-dir <dir>
+
+To also run DOE generation (LHS / ratio sweep / standards) before the
+calculator, use the orchestrator instead::
+
+    python3 -m cdk.calculators.orchestrate <experiment-dir>
 
 Outputs
 -------
-- base_master_mix.csv
-- samples_titration.csv
-- samples_titration_labcraft.csv
-- reagents.csv is updated in place with a `master_mix` row/stock concentration.
+- ``base_master_mix.csv``
+- ``samples_titration.csv``
+- ``samples_titration_labcraft.csv``
+- ``reagents.csv`` is updated in place with a ``master_mix`` row.
 """
 
 from __future__ import annotations
 
 import argparse
 import ast
-import importlib.util
 import json
 import math
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from types import ModuleType, SimpleNamespace
+from types import SimpleNamespace
 from typing import Any
 
 import pandas as pd
 
-from cdk.calculators import platemap_maker
-
-try:
-    import tomllib
-except ModuleNotFoundError:  # pragma: no cover
-    tomllib = None
+from cdk.calculators import doe, platemap_maker
+from cdk.calculators.experiment_config import load_experiment_toml
+from cdk.calculators.naming import (
+    format_reagent_column_name as _format_reagent_column_name,
+    normalize_reagent_name,
+    normalize_unit,
+    split_concentration_column_name as _split_concentration_column_name,
+)
 
 
 @dataclass(frozen=True)
@@ -93,82 +80,6 @@ class FoldResult:
     stock_limited_fmax: float
     pipetting_limited_fmax: float
     dead_volume_fmin: float
-
-
-def _strip_wrapping_pairs(text: str) -> str:
-    """Remove repeated whole-string wrappers like `[]` or `()`."""
-    out = text.strip()
-    wrappers = (("(", ")"), ("[", "]"), ("{", "}"))
-    while out:
-        changed = False
-        for left, right in wrappers:
-            if out.startswith(left) and out.endswith(right) and len(out) >= 2:
-                out = out[1:-1].strip()
-                changed = True
-        if not changed:
-            break
-    return out
-
-
-def _normalize_reagent_token(token: str) -> str:
-    """Normalize common shorthand tokens used in reagent labels."""
-    aliases = {
-        "rnase": "rnas",
-        "inhibitor": "inh",
-        "inhib": "inh",
-        "amino":"aas",
-        "acids":"",
-        "rxn": "reaction",
-        "vol": "volume",
-    }
-    return aliases.get(token, token)
-
-
-def normalize_reagent_name(name: str) -> str:
-    """Canonicalize reagent labels for matching across files."""
-    stripped = _strip_wrapping_pairs(str(name)).casefold()
-    tokens = [tok for tok in re.split(r"[^a-z0-9]+", stripped) if tok]
-    normalized_tokens = [_normalize_reagent_token(tok) for tok in tokens]
-    return "".join(normalized_tokens)
-
-
-def normalize_unit(unit: Any) -> str:
-    """Canonicalize unit labels for tolerant unit equality checks."""
-    if pd.isna(unit):
-        return ""
-    normalized = _strip_wrapping_pairs(str(unit))
-    normalized = normalized.replace("μ", "u").replace("µ", "u").casefold()
-    return "".join(normalized.split())
-
-
-def _format_reagent_column_name(reagent: str, unit: str | None = None) -> str:
-    """Build canonical '<reagent> <unit>' column names."""
-    reagent_name = str(reagent).strip()
-    if not reagent_name:
-        raise ValueError("Reagent name cannot be empty.")
-
-    if unit is None or pd.isna(unit):
-        return reagent_name
-
-    unit_name = str(unit).strip()
-    if not unit_name:
-        return reagent_name
-    if reagent_name.endswith(f" {unit_name}"):
-        return reagent_name
-    return f"{reagent_name} {unit_name}"
-
-
-def _split_concentration_column_name(name: str) -> tuple[str, str] | None:
-    """Parse '<reagent> <unit>' concentration column names."""
-    text = str(name).strip()
-    if " " not in text:
-        return None
-    reagent, unit = text.rsplit(" ", 1)
-    reagent = reagent.strip()
-    unit = unit.strip()
-    if not reagent or not unit:
-        return None
-    return reagent, unit
 
 
 def _fixed_column_key(reagent: str, unit: str) -> str:
@@ -366,7 +277,7 @@ def _load_fixed_reagents_csv(csv_path: Path) -> dict[str, float]:
     if df.empty:
         raise ValueError(f"Fixed reagents CSV is empty: {csv_path}")
 
-    reagent_col = _pick_column(df.columns, ("reagent", "component", "name"))
+    reagent_col = _pick_column(df.columns, ("reagent", "component", "Name"))
     if reagent_col is not None:
         unit_col = _pick_column(df.columns, ("unit", "units"))
         value_col = _pick_column(
@@ -480,7 +391,27 @@ def _load_fixed_reagents(raw_value: str | None, experiment_dir: Path) -> dict[st
             raise ValueError(f"Fixed reagents path must be a file: {candidate_path}")
         return _load_fixed_reagents_csv(candidate_path)
 
+    # Looks like a file path (ends in .csv, has a path separator, etc.)
+    # but the file is missing. Surface that explicitly rather than falling
+    # through to JSON-dict parsing, which would emit a misleading error.
+    if _looks_like_path(raw_value):
+        raise FileNotFoundError(
+            f"fixed_reagents file not found: tried {candidate_path}. "
+            "Check the [files].fixed entry in experiment.toml (or "
+            "--fixed-reagents on the CLI)."
+        )
     return _parse_fixed_reagents_literal(raw_value)
+
+
+def _looks_like_path(raw_value: str) -> bool:
+    """True if the value looks like it was intended as a file path."""
+    text = str(raw_value).strip()
+    return (
+        text.lower().endswith(".csv")
+        or "/" in text
+        or "\\" in text
+        or text.startswith("~")
+    )
 
 
 def apply_fixed_reagents_to_samples(
@@ -662,142 +593,7 @@ def resolve_sample_reagent_names(
     return resolved_samples, resolved_parsed_columns
 
 
-def _load_python_module(path: Path) -> ModuleType:
-    """Load a params python file as a module."""
-    spec = importlib.util.spec_from_file_location(path.stem, path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Could not load python module from {path}")
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def load_config(experiment_dir: Path, params_file: str) -> SimpleNamespace:
-    """Load config from TOML/Python and merge with calculator defaults."""
-    params_path = experiment_dir / params_file
-    if not params_path.exists():
-        raise FileNotFoundError(f"Missing params file: {params_path}")
-
-    if params_path.suffix == ".toml":
-        if tomllib is None:
-            raise RuntimeError("tomllib is unavailable in this python runtime")
-        with open(params_path, "rb") as handle:
-            data = tomllib.load(handle)
-    elif params_path.suffix == ".py":
-        module = _load_python_module(params_path)
-        data = {
-            key: getattr(module, key)
-            for key in dir(module)
-            if not key.startswith("_")
-        }
-    else:
-        raise ValueError(
-            f"Unsupported params format `{params_path.suffix}`. Use .toml or .py"
-        )
-
-    if "master_mix_reagents" in data:
-        raise AssertionError(
-            "`master_mix_reagents` is no longer supported. "
-            "Use `use_base_master_mix` and `exclude_from_base_reagents` instead."
-        )
-
-    defaults = {
-        "samples_final_concs_file": "samples_final_concs.csv",
-        "reagents_file": "reagents.csv",
-        "fixed_reagents": None,
-        "fixed_reagents_overwrite_existing": False,
-        "replicates": 1,
-        "base_master_mix_file": "base_master_mix.csv",
-        "samples_titration_file": "samples_titration.csv",
-        "samples_titration_labcraft_file": "samples_titration_labcraft.csv",
-        "buffer_reagent": "water",
-        "master_mix_reagent_name": "master_mix",
-        "use_base_master_mix": True,
-        "exclude_from_base_reagents": [],
-        "pipetting_scalar": 1.1,
-        "min_pipetting_vol_ul": 0.5,
-        "conc_decimals": 3,
-        "vol_decimals": 3,
-        "add_well_ids": True,
-        "well_layout_mode": "centered_random",
-        "well_order": "column",
-        "well_skip": True,
-        "well_randomize": True,
-        "debug_constraints": False,
-        "add_buffer_to_base_master_mix": True,
-    }
-
-    merged = {**defaults, **data}
-    if "final_rxn_vol_ul" not in merged:
-        raise AssertionError("`final_rxn_vol_ul` must be provided in params file.")
-
-    return SimpleNamespace(**merged)
-
-
-def auto_detect_params_file(experiment_dir: Path) -> str:
-    """Find a valid params file in an experiment directory.
-
-    Preference order is explicit calculator/experiment names first, then any
-    `.toml`/`.py` file that validates via `load_config`.
-    """
-    preferred_names = [
-        "calculator_params.toml",
-        "calculator_params.py",
-        "experiment_params.toml",
-        "experiment_params.py",
-        "params.toml",
-        "params.py",
-    ]
-    existing_files = {
-        path.name: path
-        for path in experiment_dir.iterdir()
-        if path.is_file() and path.suffix in {".toml", ".py"}
-    }
-
-    candidate_names: list[str] = []
-    for name in preferred_names:
-        if name in existing_files:
-            candidate_names.append(name)
-    for name in sorted(existing_files):
-        if name not in candidate_names:
-            candidate_names.append(name)
-
-    if not candidate_names:
-        raise FileNotFoundError(
-            "No params file found in experiment directory. "
-            "Expected a .toml or .py config file."
-        )
-
-    valid_candidates: list[str] = []
-    invalid_reasons: dict[str, str] = {}
-    for candidate in candidate_names:
-        try:
-            load_config(experiment_dir=experiment_dir, params_file=candidate)
-            valid_candidates.append(candidate)
-        except Exception as exc:
-            invalid_reasons[candidate] = str(exc)
-            continue
-
-    if len(valid_candidates) == 1:
-        return valid_candidates[0]
-
-    if len(valid_candidates) > 1:
-        preferred_valid = [n for n in preferred_names if n in valid_candidates]
-        if preferred_valid:
-            return preferred_valid[0]
-        raise AssertionError(
-            "Multiple valid params files found. Please specify --params-file explicitly. "
-            f"Candidates: {valid_candidates}"
-        )
-
-    raise AssertionError(
-        "Found params-like files, but none are valid calculator configs.\n"
-        + "\n".join(
-            f"- {name}: {reason}"
-            for name, reason in invalid_reasons.items()
-        )
-    )
+EXPERIMENT_CONFIG_FILENAME = "experiment.toml"
 
 
 def parse_samples_schema(samples_raw: pd.DataFrame) -> tuple[pd.DataFrame, list[ReagentColumn]]:
@@ -817,7 +613,7 @@ def parse_samples_schema(samples_raw: pd.DataFrame) -> tuple[pd.DataFrame, list[
         raise AssertionError("samples_final_concs.csv is empty.")
 
     # Metadata columns that are not reagent concentrations.
-    METADATA_COLUMNS = {"replicate", "Type"}
+    METADATA_COLUMNS = {"replicate", "Type", "Name"}
     METADATA_REAGENT_KEYS = {
         normalize_reagent_name("rxn volume"),
         normalize_reagent_name("reaction volume"),
@@ -1016,6 +812,217 @@ def _format_top_contributors(volumes: pd.Series, top_n: int = 3) -> str:
     return ", ".join(f"{reagent} {value:.3f}" for reagent, value in top.items())
 
 
+def print_fold_constraint_debug_report(
+    base_conc: pd.Series,
+    stock_conc: pd.Series,
+    final_rxn_vol_ul: float,
+    min_pipetting_vol_ul: float,
+    total_titration_vol_ul: pd.Series,
+    vol_to_pipette: pd.DataFrame | None = None,
+    top_n_conditions: int = 5,
+    top_n_contributors: int = 4,
+) -> None:
+    """Diagnose which reagents/conditions bind base_master_mix_fold.
+
+    Decomposes the f_max vs f_min inequality so users can see *which* base
+    reagent dominates the stock-limited f_max and *which* condition's
+    titration volume drives the dead-volume-required f_min.
+    """
+    ratios = (base_conc / stock_conc).astype(float)
+    ratio_sum = float(ratios.sum())
+    stock_limited_fmax = (1.0 / ratio_sum) if ratio_sum > 0 else float("inf")
+    pipetting_limited_fmax = final_rxn_vol_ul / min_pipetting_vol_ul
+    binding = (
+        "stock"
+        if stock_limited_fmax <= pipetting_limited_fmax
+        else "pipetting"
+    )
+
+    base_table = pd.DataFrame(
+        {
+            "base_conc": base_conc.astype(float),
+            "stock_conc": stock_conc.astype(float),
+            "base_over_stock": ratios,
+            "pct_of_ratio_sum": (
+                ratios / ratio_sum * 100.0 if ratio_sum > 0 else ratios * 0.0
+            ),
+        }
+    ).sort_values("base_over_stock", ascending=False)
+    base_table.index.name = "reagent"
+
+    _log("\n[debug-constraints] f_max breakdown (base reagents)")
+    _log(
+        f"  stock_limited_fmax={stock_limited_fmax:.4f}, "
+        f"pipetting_limited_fmax={pipetting_limited_fmax:.4f}, "
+        f"binding={binding}"
+    )
+    _log(
+        base_table.round(
+            {
+                "base_conc": 4,
+                "stock_conc": 4,
+                "base_over_stock": 4,
+                "pct_of_ratio_sum": 1,
+            }
+        ).to_string()
+    )
+
+    remaining_vol = final_rxn_vol_ul - total_titration_vol_ul.astype(float)
+    safe_remaining = remaining_vol.where(remaining_vol > 0, other=float("nan"))
+    required_fold = final_rxn_vol_ul / safe_remaining
+    fmin = float(required_fold.max(skipna=True))
+
+    cond_rows: list[dict[str, Any]] = []
+    sorted_conds = required_fold.sort_values(ascending=False).head(
+        top_n_conditions
+    )
+    for cond, fold in sorted_conds.items():
+        contributors = "-"
+        if vol_to_pipette is not None and cond in vol_to_pipette.index:
+            contributors = _format_top_contributors(
+                vol_to_pipette.loc[cond], top_n=top_n_contributors
+            )
+        cond_rows.append(
+            {
+                "condition": cond,
+                "total_titration_ul": round(
+                    float(total_titration_vol_ul.loc[cond]), 3
+                ),
+                "remaining_ul": round(float(remaining_vol.loc[cond]), 3),
+                "required_fold": (
+                    round(float(fold), 3) if pd.notna(fold) else float("inf")
+                ),
+                "top contributors": contributors,
+            }
+        )
+
+    _log("\n[debug-constraints] f_min breakdown (per-condition dead volume)")
+    _log(f"  dead_volume_required_fmin={fmin:.4f}")
+    _log(pd.DataFrame(cond_rows).to_string(index=False))
+
+    feasible_fmax = min(stock_limited_fmax, pipetting_limited_fmax)
+    feasible = feasible_fmax + 1e-12 >= fmin
+
+    _log("\n[debug-constraints] suggestions")
+    if feasible:
+        _log(
+            "  fold inequality satisfied: "
+            f"f_max={feasible_fmax:.4f} >= f_min={fmin:.4f}."
+        )
+        return
+
+    if binding == "stock":
+        top2 = base_table.head(2)
+        names = " + ".join(top2.index.astype(str))
+        pct = float(top2["pct_of_ratio_sum"].sum())
+        _log(
+            f"  - f_max is stock-limited; {names} together contribute "
+            f"{pct:.1f}% of base/stock ratio sum. Either raise their stocks "
+            "or add them to `exclude_from_base` (titrate per-well)."
+        )
+        _log(
+            "  - increasing final_rxn_vol_ul will NOT help here: titration "
+            "volumes scale with the well, so f_min is volume-invariant, and "
+            "stock-limited f_max has no volume term."
+        )
+    else:
+        new_vol_for_feasibility = fmin * min_pipetting_vol_ul
+        new_min_pip_for_feasibility = final_rxn_vol_ul / fmin
+        _log(
+            "  - f_max is pipetting-limited. Either raise "
+            f"final_rxn_vol_ul to >= {new_vol_for_feasibility:.2f} uL "
+            f"(currently {final_rxn_vol_ul:.2f}) or lower "
+            f"min_pipetting_vol_ul to <= "
+            f"{new_min_pip_for_feasibility:.3f} uL "
+            f"(currently {min_pipetting_vol_ul:.2f})."
+        )
+    _log(
+        "  - or reduce target concentrations on the top conditions above "
+        "to shrink their total_titration_ul / final_rxn_vol_ul ratio."
+    )
+
+
+def check_physical_feasibility(
+    samples_by_reagent: pd.DataFrame,
+    stock_conc: pd.Series,
+    *,
+    top_n_contributors: int = 6,
+) -> None:
+    """Raise if any condition needs more reagent volume than the well holds.
+
+    For each condition, Σ(target/stock) must be ≤ 1.0. This is a hard
+    physical constraint independent of master mix fold, base/titration
+    assignment, well size, or pipetting limits. Prints a table of only the
+    failing conditions, then raises AssertionError.
+    """
+    reagents = list(samples_by_reagent.columns)
+    stocks_aligned = stock_conc.reindex(reagents).astype(float)
+    target_over_stock = (
+        samples_by_reagent.astype(float).divide(stocks_aligned, axis=1).fillna(0.0)
+    )
+    per_condition_sum = target_over_stock.sum(axis=1)
+    impossible = per_condition_sum[per_condition_sum > 1.0]
+    if impossible.empty:
+        return
+
+    rows: list[dict[str, Any]] = []
+    for cond in impossible.sort_values(ascending=False).index:
+        contribs = target_over_stock.loc[cond]
+        top = contribs[contribs > 0].sort_values(ascending=False).head(
+            top_n_contributors
+        )
+        rows.append(
+            {
+                "condition": cond,
+                "sum_target_over_stock": round(float(impossible.loc[cond]), 4),
+                "overshoot": round(float(impossible.loc[cond] - 1.0), 4),
+                "top contributors": ", ".join(
+                    f"{r} {v:.3f}" for r, v in top.items()
+                ),
+            }
+        )
+
+    _log(
+        "\n[physical-feasibility] Conditions where Σ(target/stock) > 1.0 "
+        "(physically impossible regardless of master mix design):"
+    )
+    _log(pd.DataFrame(rows).to_string(index=False))
+
+    failing = target_over_stock.loc[impossible.index]
+    failing_sums = impossible
+    mean_target_over_stock = failing.mean(axis=0)
+    mean_pct_of_sum = (
+        failing.divide(failing_sums, axis=0) * 100.0
+    ).mean(axis=0)
+    avg_table = pd.DataFrame(
+        {
+            "mean_target_over_stock": mean_target_over_stock,
+            "mean_pct_of_sum": mean_pct_of_sum,
+        }
+    )
+    avg_table = avg_table[avg_table["mean_target_over_stock"] > 0].sort_values(
+        "mean_target_over_stock", ascending=False
+    )
+    avg_table.index.name = "reagent"
+
+    _log(
+        "\n[physical-feasibility] Average per-reagent contribution "
+        "across the failing conditions above:"
+    )
+    _log(
+        avg_table.round(
+            {"mean_target_over_stock": 4, "mean_pct_of_sum": 1}
+        ).to_string()
+    )
+    raise AssertionError(
+        f"Physically infeasible conditions: {list(impossible.index)}. "
+        "Σ(target/stock) > 1.0 means the requested reagent volumes exceed "
+        "the well volume. Either raise stocks for the listed top "
+        "contributors or lower target concentrations on these conditions. "
+        "No master mix design can rescue this."
+    )
+
+
 def print_titration_constraint_debug_report(
     samples_by_reagent: pd.DataFrame,
     base_conc: pd.Series,
@@ -1100,6 +1107,9 @@ def solve_base_master_mix_fold(
     final_rxn_vol_ul: float,
     min_pipetting_vol_ul: float,
     total_titration_vol_ul: pd.Series,
+    *,
+    vol_to_pipette: pd.DataFrame | None = None,
+    debug: bool = False,
 ) -> FoldResult:
     """Solve feasible base master mix fold from stock and volume constraints.
 
@@ -1135,6 +1145,14 @@ def solve_base_master_mix_fold(
                 dead_volume_fmin_series >= dead_volume_fmin - 1e-9
             ].index
         )
+        print_fold_constraint_debug_report(
+            base_conc=base_conc,
+            stock_conc=stock_conc,
+            final_rxn_vol_ul=final_rxn_vol_ul,
+            min_pipetting_vol_ul=min_pipetting_vol_ul,
+            total_titration_vol_ul=total_titration_vol_ul,
+            vol_to_pipette=vol_to_pipette,
+        )
         raise AssertionError(
             "No feasible base_master_mix_fold under current constraints.\n"
             f"- stock/pipetting limited f_max={feasible_fmax:.4f}\n"
@@ -1147,6 +1165,16 @@ def solve_base_master_mix_fold(
 
     fold = feasible_fmax
     base_mix_vol_per_rxn = final_rxn_vol_ul / fold
+
+    if debug:
+        print_fold_constraint_debug_report(
+            base_conc=base_conc,
+            stock_conc=stock_conc,
+            final_rxn_vol_ul=final_rxn_vol_ul,
+            min_pipetting_vol_ul=min_pipetting_vol_ul,
+            total_titration_vol_ul=total_titration_vol_ul,
+            vol_to_pipette=vol_to_pipette,
+        )
 
     return FoldResult(
         base_master_mix_fold=fold,
@@ -1180,9 +1208,6 @@ def build_base_master_mix(
     vol_per_rxn_raw = base_conc * final_rxn_vol_ul / stock_conc
     vol_per_rxn = vol_per_rxn_raw.round(vol_decimals)
 
-    base_total_master_mix_volume_ul = (
-        fold_result.base_master_mix_vol_per_rxn_ul * n_conditions * pipetting_scalar
-    )
     vol_to_pipette_raw = vol_per_rxn_raw * n_conditions * pipetting_scalar
 
     # If any component is below minimum pipetting volume in pooled prep, scale
@@ -1194,7 +1219,6 @@ def build_base_master_mix(
     scale_factor = max(1.0, min_target_unrounded / min_component_raw)
 
     effective_pipetting_scalar = pipetting_scalar * scale_factor
-    total_master_mix_volume_ul = base_total_master_mix_volume_ul * scale_factor
     vol_to_pipette = (vol_to_pipette_raw * scale_factor).round(vol_decimals)
 
     if (vol_per_rxn <= 0).any():
@@ -1336,9 +1360,9 @@ def build_samples_titration(
         )
 
     name_values = _build_condition_name_numbers(conditions)
-    if "Name" in out.columns:
-        out = out.drop(columns=["Name"])
-    out.insert(1, "Name", name_values)
+    if "conditions" not in out.columns:
+        # out = out.drop(columns=["Name"])
+        out.insert(1, "conditions", name_values)
 
     # Replicate is internal metadata for row expansion; omit from final titration CSV.
     if "replicate" in out.columns:
@@ -1549,7 +1573,7 @@ def run_pipeline(
             if _cond_col
             else samples_raw["Type"]
         )
-        _std_mask = (_type_series == "standard").values
+        _std_mask = (_type_series == doe.TYPE_STANDARDS).values
         _doe_raw = samples_raw[~_std_mask].copy().reset_index(drop=True)
         _std_raw = samples_raw[_std_mask].copy().reset_index(drop=True)
 
@@ -1666,6 +1690,10 @@ def run_pipeline(
             )
 
     final_rxn_vol_ul = float(cfg.final_rxn_vol_ul)
+    check_physical_feasibility(
+        samples_by_reagent=samples_by_reagent,
+        stock_conc=stock_conc,
+    )
     conc_to_add, vol_to_pipette, total_titration_vol_ul = compute_titration_concs_and_vols(
         samples_by_reagent=samples_by_reagent,
         base_conc=base_conc,
@@ -1742,6 +1770,8 @@ def run_pipeline(
             final_rxn_vol_ul=final_rxn_vol_ul,
             min_pipetting_vol_ul=float(cfg.min_pipetting_vol_ul),
             total_titration_vol_ul=total_titration_vol_ul,
+            vol_to_pipette=vol_to_pipette,
+            debug=bool(getattr(cfg, "debug_constraints", False)),
         )
 
         vol_decimals_int = int(cfg.vol_decimals)
@@ -1917,23 +1947,15 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--experiment-dir",
-        default="/Volumes/bnext/experiments/20260218-DiscoveryPlate-Calculators/example_inputs_clean_v1",
-        help="Directory with input CSVs and params file.",
-    )
-    parser.add_argument(
-        "--params-file",
-        default=None,
-        help=(
-            "Params filename inside --experiment-dir (.toml or .py). "
-            "If omitted, auto-detected from files in the experiment directory."
-        ),
+        required=True,
+        help="Directory containing experiment.toml and the input CSVs.",
     )
     parser.add_argument(
         "--reagents-file",
         default=None,
         help=(
             "Optional reagents CSV filename inside --experiment-dir. "
-            "Overrides `reagents_file` from params."
+            "Overrides `[files].reagents` from experiment.toml."
         ),
     )
     parser.add_argument(
@@ -1973,12 +1995,7 @@ def main() -> None:
     """CLI entrypoint."""
     args = _parse_args()
     experiment_dir = Path(args.experiment_dir).resolve()
-    params_file = (
-        str(args.params_file)
-        if args.params_file
-        else auto_detect_params_file(experiment_dir)
-    )
-    cfg = load_config(experiment_dir=experiment_dir, params_file=params_file)
+    cfg = load_experiment_toml(experiment_dir / EXPERIMENT_CONFIG_FILENAME)
     if args.reagents_file:
         cfg.reagents_file = str(args.reagents_file)
     if args.fixed_reagents is not None:

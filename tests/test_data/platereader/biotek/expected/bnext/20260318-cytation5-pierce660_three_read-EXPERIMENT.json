@@ -1,0 +1,58 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "660-Assay-1:660": {
+                "Absorbance Wavelength (nm)": "660",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "660-Assay-1",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-18 12:44:58"
+            },
+            "660-Assay-2:660": {
+                "Absorbance Wavelength (nm)": "660",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "660-Assay-2",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-18 12:44:58"
+            },
+            "660-Assay-3:660": {
+                "Absorbance Wavelength (nm)": "660",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "660-Assay-3",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-18 12:44:58"
+            }
+        },
+        "rows": 72
+    }
+]

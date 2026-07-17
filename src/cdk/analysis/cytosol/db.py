@@ -7,7 +7,7 @@ import re
 from tempfile import TemporaryDirectory
 
 import cdk
-from cdk.analysis.cytosol import platereader as pr
+from cdk.instruments.platereader import Kinetics
 
 # TODO:
 #   - Properly track / handle the normalized data column so we can check and name it appropriately.
@@ -77,6 +77,7 @@ class CytosolDB():
         
         data = pd.concat(all_data.values()).reset_index(drop=True)
         data["Date"] = pd.to_datetime(data["Date"], format="mixed")
+        data["Time"] = pd.to_timedelta(data["Time"])
         data = data.sort_values(by=["Date", "Experiment"])
         
         summary = pd.concat(all_summary.values()).reset_index(drop=True)
@@ -137,6 +138,85 @@ class CytosolDB():
             
         return True
         
+    def import_kinetics(self, kinetics: Kinetics, force=False):
+        kinetics_summary = kinetics.with_platemap()
+        # drop Read, set Read Name -> Read, update with Read Type M/F
+        # Clock Time = Start Time + Time
+        # gain extended -> ext
+        # monochromator -> Read Type M, filter -> Read Type F
+        # Data_normalized -> data_normalized
+        rename_map = {
+            'Reader ID': 'Reader Serial Number',
+            'Reader Type': 'Plate Reader',
+            'Plate ID': 'Plate',
+            'Max Velocity': 'Velocity_Max',
+            'Max Velocity Time': 'Velocity_Time',
+            'Lag Time': 'Lag_Time',
+            'Steady State': 'Steady State_data_normalized',
+            'Completion Time': 'Steady State_Time',
+            'Drift': 'Fit_drift',
+            'Offset': 'Fit_offset',
+            'Fit Params': 'Fit_params',
+            'R^2': 'Fit_R^2',
+            'Good Fit': 'Fit_good_fit',
+            'Fit Function': 'fit_function_name',
+            'Data_normalized': 'data_normalized',
+            'Read Name': 'Read'
+        }
+
+        for experiment, group in kinetics_summary.groupby('Experiment'):
+            log.info(f"Exporting experiment: {experiment}")
+            exp_date = group["Start Time"].min().strftime("%Y%m%d")
+            exp_name = re.sub(r"\W+", "-", experiment.lower())
+            exp_filename = f"{DB_DATA_FILE_PREFIX}-{exp_date}-{exp_name}.csv"
+            log.debug(f"Experiment data file: {exp_filename}")
+
+            data_path = self._db_dir / DB_DATA_DIR / exp_filename
+            data_path.parent.mkdir(parents=True, exist_ok=True)
+            log.debug(f"Output data path: {data_path}")
+
+            summary_filename = f"{DB_SUMMARY_FILE_PREFIX}-{exp_date}-{exp_name}.csv"
+            summary_path = self._db_dir / DB_SUMMARY_DIR / summary_filename
+            summary_path.parent.mkdir(parents=True, exist_ok=True)
+            log.debug(f"Kinetics summary path: {summary_path}")
+            if data_path.exists() or summary_path.exists():
+                if force:
+                    log.info(f"Overwriting existing data file(s) {data_path} {summary_path}.")
+                else:
+                    log.warning(f"Output file(s) already exist. Use `force=True` to overwrite ({data_path, summary_path}).")
+                    return
+            
+            data = kinetics.source.data[kinetics.source.data['Experiment'] == experiment].drop(columns='Read').rename(columns=rename_map)
+            data = self.add_version(data)
+            data['Clock Time'] = data['Start Time'] + data['Time']
+            if 'Gain' in data.columns:
+                data['Gain'] = data['Gain'].replace('extended', 'ext')
+            if 'Excitation Optics' in data.columns:
+                data['Read Type'] = data['Excitation Optics'].map(
+                    {'monochromator': 'M', 'filter': 'F'}
+                )
+
+            if not self.validate_columns(data):
+                log.warning("Data validation failed: will not export.")
+                return
+                
+            data.to_csv(data_path, index=False)
+
+            kinetics_df = kinetics_summary[kinetics_summary['Experiment'] == experiment].drop(columns='Read').rename(columns=rename_map)
+            kinetics_df = self.add_version(kinetics_df)
+            if 'Gain' in kinetics_df.columns:
+                kinetics_df['Gain'] = kinetics_df['Gain'].replace('extended', 'ext')
+            if 'Excitation Optics' in kinetics_df.columns:
+                kinetics_df['Read Type'] = kinetics_df['Excitation Optics'].map(
+                    {'monochromator': 'M', 'filter': 'F'}
+                )
+
+            if not self.validate_columns(kinetics_df, REQUIRED_KINETICS_COLUMNS):
+                log.warning("Kinetics validation failed: will not export.")
+                return
+
+            kinetics_df.to_csv(summary_path, index=False)
+
     def export(self, data: pd.DataFrame, platemap: pd.DataFrame, kinetics: pd.DataFrame, force=False):
         data = data.rename(columns={"Experiment Name": "Experiment"}) 
         experiment = data["Experiment"].iloc[0]
@@ -172,7 +252,9 @@ class CytosolDB():
         data.to_csv(data_path, index=False)
 
         kinetics = kinetics.copy()
-        kinetics.columns = [re.sub(r"_$", "", '_'.join(col)) for col in kinetics.columns]
+        if kinetics.columns.nlevels > 1:
+            kinetics.columns = [re.sub(r"_$", "", '_'.join(col)) for col in kinetics.columns]
+        kinetics_index = kinetics.index.names
         kinetics = kinetics.reset_index()
         
         # Remove common columns between kinetics and platemap,
@@ -180,10 +262,13 @@ class CytosolDB():
         # when those parts of the platemap are in the kinetics index because we
         # grouped on them.
         for col in platemap.columns:
-            if col != "Well" and col in kinetics.columns:
+            if col not in kinetics_index and col in kinetics.columns:
                 kinetics = kinetics.drop(columns=col)
         
-        kinetics = platemap.merge(kinetics, how="right", on="Well")
+        # if 'Well' not in kinetics and 'Well' not in platemap:
+        #     log.warning("'Well' column was missing from platemap and kinetics; validation failed")
+        #     return
+        kinetics = platemap.merge(kinetics, how="right") # , on=kinetics_index)
         kinetics = kinetics.rename(columns={"Experiment Name": "Experiment"})
         kinetics = self.add_version(kinetics)
         

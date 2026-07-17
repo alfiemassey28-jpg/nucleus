@@ -1,0 +1,132 @@
+Software Version	3.16.10
+
+
+
+Experiment File Path:	C:\Users\bnext\Documents\Biotek\experiments\20260529-cytation3-pierce660-vio-reconc-2.xpt
+Protocol File Path:	C:\Users\bnext\Documents\Biotek\protocols\cytation3_protocols\cytation3-pierce660.prt
+
+
+
+Plate Number	Plate 1
+Date	5/29/2026
+Time	6:22:47 PM
+Reader Type:	Cytation3
+Reader Serial Number:	130723A
+Reading Type	Reader
+
+Procedure Details
+
+Plate Type	96 WELL PLATE
+Well Selection	Runtime
+Eject plate on completion	
+Read	Absorbance Endpoint
+	Full Plate
+	Wavelengths:  660
+	Read Speed: Normal,  Delay: 100 msec,  Measurements/Data Point: 8
+
+Layout
+	1	2	3	4	5	6	7	8	9	10	11	12
+A	STD1	STD1	STD1	SPL1:1	SPL1:1	SPL1:1	SPL2:1	SPL2:1					Well ID
+	2000	2000	2000	1	1	1	1	1					Conc/Dil
+B	STD2	STD2	STD2	SPL1:2	SPL1:2	SPL1:2	SPL2:2	SPL2:2					Well ID
+	1500	1500	1500	2	2	2	2	2					Conc/Dil
+C	STD3	STD3	STD3	SPL1:3	SPL1:3	SPL1:3	SPL2:3	SPL2:3					Well ID
+	1000	1000	1000	4	4	4	4	4					Conc/Dil
+D	STD4	STD4	STD4	SPL1:4	SPL1:4	SPL1:4	SPL2:4	SPL2:4					Well ID
+	750	750	750	8	8	8	8	8					Conc/Dil
+E	STD5	STD5	STD5	SPL1:5	SPL1:5	SPL1:5	SPL2:5	SPL2:5					Well ID
+	500	500	500	16	16	16	16	16					Conc/Dil
+F	STD6	STD6	STD6	SPL1:6	SPL1:6	SPL1:6	SPL2:6	SPL2:6					Well ID
+	250	250	250	32	32	32	32	32					Conc/Dil
+G	STD7	STD7	STD7	SPL1:7	SPL1:7	SPL1:7	SPL2:7	SPL2:7					Well ID
+	125	125	125	64	64	64	64	64					Conc/Dil
+H	STD8	STD8	STD8	SPL1:8	SPL1:8	SPL1:8	SPL2:8	SPL2:8					Well ID
+	0	0	0	128	128	128	128	128					Conc/Dil
+
+
+
+Actual Temperature:	24.2
+
+
+
+Actual Temperature:	24.2
+
+
+
+Actual Temperature:	24.2
+
+
+
+Actual Temperature:	24.2
+
+
+
+Actual Temperature:	24.2
+
+Results
+
+SPL1	A4	1	1.195	3	1.215	0.018	1.488
+	A5	1	1.224				
+	A6	1	1.228				
+	B4	2	0.701	3	0.710	0.015	2.064
+	B5	2	0.727				
+	B6	2	0.703				
+	C4	4	0.405	3	0.401	0.008	2.117
+	C5	4	0.406				
+	C6	4	0.391				
+	D4	8	0.259	3	0.268	0.007	2.702
+	D5	8	0.271				
+	D6	8	0.272				
+	E4	16	0.195	3	0.198	0.005	2.308
+	E5	16	0.203				
+	E6	16	0.195				
+	F4	32	0.161	3	0.163	0.001	0.862
+	F5	32	0.164				
+	F6	32	0.163				
+	G4	64	0.140	3	0.145	0.004	2.721
+	G5	64	0.146				
+	G6	64	0.148				
+	H4	128	0.135	3	0.137	0.002	1.545
+	H5	128	0.139				
+	H6	128	0.138				
+SPL2	A7	1	0.247	2	0.250	0.005	2.090
+	A8	1	0.254				
+	B7	2	0.185	2	0.183	0.003	1.503
+	B8	2	0.181				
+	C7	4	0.157	2	0.157	0.000	0.180
+	C8	4	0.157				
+	D7	8	0.141	2	0.140	0.002	1.570
+	D8	8	0.138				
+	E7	16	0.135	2	0.135	0.000	0.157
+	E8	16	0.135				
+	F7	32	0.132	2	0.131	0.001	0.969
+	F8	32	0.131				
+	G7	64	0.131	2	0.131	0.000	0.270
+	G8	64	0.131				
+	H7	128	0.133	2	0.132	0.002	1.180
+	H8	128	0.131				
+STD1	A1	2000	1.196	3	1.210	0.017	1.400
+	A2	2000	1.205				
+	A3	2000	1.229				
+STD2	B1	1500	0.942	3	0.961	0.017	1.718
+	B2	1500	0.968				
+	B3	1500	0.973				
+STD3	C1	1000	0.680	3	0.694	0.013	1.862
+	C2	1000	0.696				
+	C3	1000	0.706				
+STD4	D1	750	0.541	3	0.552	0.011	1.921
+	D2	750	0.552				
+	D3	750	0.562				
+STD5	E1	500	0.392	3	0.403	0.011	2.804
+	E2	500	0.402				
+	E3	500	0.414				
+STD6	F1	250	0.253	3	0.261	0.007	2.719
+	F2	250	0.265				
+	F3	250	0.266				
+STD7	G1	125	0.181	3	0.186	0.005	2.701
+	G2	125	0.185				
+	G3	125	0.191				
+STD8	H1	0	0.125	3	0.127	0.001	1.152
+	H2	0	0.127				
+	H3	0	0.128				
+

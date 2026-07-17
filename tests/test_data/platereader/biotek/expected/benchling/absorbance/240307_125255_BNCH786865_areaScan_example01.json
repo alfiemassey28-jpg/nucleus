@@ -1,0 +1,77 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Matrix Size",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well",
+            "X Read #"
+        ],
+        "reads": {
+            "AreaScanTest:450": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "AreaScanTest",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-03-07 12:45:07"
+            }
+        },
+        "rows": 2425
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Matrix Size",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Mean OD [AreaScanTest:450]": {
+                "Absorbance Wavelength (nm)": "450",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "AreaScanTest",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-03-07 12:45:07"
+            }
+        },
+        "rows": 96
+    }
+]
