@@ -1,0 +1,86 @@
+
+
+Software Version	3.15.15
+
+
+
+Experiment File Path:	C:\Users\Public\Documents\Experiments\bnext\20240709-PURE-diff DNA conc.xpt
+Protocol File Path:	C:\Users\Public\Documents\Protocols\bnext\PURE Fluorescence plamGFP.prt
+
+
+
+Plate Number	Plate 1
+Date	7/9/2024
+Time	3:41:06 PM
+Reader Type:	Cytation5
+Reader Serial Number:	2305311F
+Reading Type	Reader
+
+Procedure Details
+
+Plate Type	384 WELL PLATE
+Well Selection	Runtime
+Eject plate on completion	
+Set Temperature	Setpoint 37�C, Gradient 0 �C
+	Preheat before moving to next step
+Start Kinetic	Runtime 6:00:00 (HH:MM:SS), Interval 0:05:00, 73 Reads
+    Read	Fluorescence Endpoint
+	Full Plate
+	Filter Set 1
+	    Excitation: 490/10,  Emission: 520/10
+	    Optics: Top,  Gain: 100
+	Light Source: Xenon Flash,  Lamp Energy: High,  Standard Dynamic Range
+	Read Speed: Normal,  Delay: 100 msec,  Measurements/Data Point: 10
+	Read Height: 7 mm
+End Kinetic	
+
+Layout
+	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24
+A																									Well ID
+B	SPL1	SPL2	SPL3	SPL4	SPL5	SPL6	SPL7	SPL8																	Well ID
+C	SPL9	SPL10	SPL11	SPL12	SPL13	SPL14	SPL15	SPL16																	Well ID
+D																									Well ID
+E																									Well ID
+F																									Well ID
+G																									Well ID
+H																									Well ID
+I																									Well ID
+J																									Well ID
+K																									Well ID
+L																									Well ID
+M																									Well ID
+N																									Well ID
+O																									Well ID
+P																									Well ID
+
+490,520
+
+Time	T� 490,520	B1	B2	B3	B4	B5	B6	B7	B8	C1	C2	C3	C4	C5	C6	C7	C8
+0:00:00	37.0	289	281	289	273	272	273	268	258	277	269	269	259	285	276	266	263
+0:05:00	37.1	312	293	276	280	258	266	239	247	263	277	262	264	263	242	270	266
+0:10:00	37.0	449	439	330	318	269	262	259	253	246	272	236	244	257	254	348	357
+
+Max V [490,520]
+
+Well ID	SPL1	SPL2	SPL3	SPL4	SPL5	SPL6	SPL7	SPL8	SPL9	SPL10	SPL11	SPL12	SPL13	SPL14	SPL15	SPL16	
+Well	B1	B2	B3	B4	B5	B6	B7	B8	C1	C2	C3	C4	C5	C6	C7	C8	
+Max V [490,520]	458820.000	417220.000	286560.000	190260.000	129040.000	45620.000	43260.000	1500.000	364760.000	1940.000	32660.000	628440.000	-3640.000	36820.000	216940.000	185300.000	
+
+R-Squared [490,520]
+
+Well ID	SPL1	SPL2	SPL3	SPL4	SPL5	SPL6	SPL7	SPL8	SPL9	SPL10	SPL11	SPL12	SPL13	SPL14	SPL15	SPL16	
+Well	B1	B2	B3	B4	B5	B6	B7	B8	C1	C2	C3	C4	C5	C6	C7	C8	
+R-Squared [490,520]	1.000	0.999	0.999	0.999	0.999	0.997	0.990	0.566	0.999	0.729	1.000	1.000	0.948	0.996	1.000	0.999	
+
+t at Max V [490,520]
+
+Well ID	SPL1	SPL2	SPL3	SPL4	SPL5	SPL6	SPL7	SPL8	SPL9	SPL10	SPL11	SPL12	SPL13	SPL14	SPL15	SPL16	
+Well	B1	B2	B3	B4	B5	B6	B7	B8	C1	C2	C3	C4	C5	C6	C7	C8	
+t at Max V [490,520]	0:55:00	0:55:00	1:10:00	1:15:00	1:10:00	1:00:00	1:30:00	4:20:00	1:35:00	1:25:00	2:00:00	1:10:00	0:10:00	1:40:00	0:45:00	0:50:00	
+
+Lagtime [490,520]
+
+Well ID	SPL1	SPL2	SPL3	SPL4	SPL5	SPL6	SPL7	SPL8	SPL9	SPL10	SPL11	SPL12	SPL13	SPL14	SPL15	SPL16	
+Well	B1	B2	B3	B4	B5	B6	B7	B8	C1	C2	C3	C4	C5	C6	C7	C8	
+Lagtime [490,520]	0:21:49	0:22:34	0:27:02	0:26:58	0:30:43	0:30:33	0:39:00	4:26:00	0:57:30	1:26:08	1:26:37	0:43:03	?????	1:13:35	0:18:02	0:17:29	
+

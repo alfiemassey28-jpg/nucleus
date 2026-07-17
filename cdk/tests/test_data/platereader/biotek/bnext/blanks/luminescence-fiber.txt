@@ -1,0 +1,60 @@
+
+
+Software Version	3.16.10
+
+
+
+Experiment File Path:	
+Protocol File Path:	
+
+
+
+Plate Number	Plate 1
+Date	???
+Time	???
+Reader Type:	
+Reader Serial Number:	
+Reading Type	???
+
+Procedure Details
+
+Plate Type	96 WELL PLATE (Use plate lid)
+Eject plate on completion	
+Read	Luminescence Endpoint
+	Full Plate
+	Integration Time: 0:01.00 (MM:SS.ss)
+	Filter Set 1
+	    Emission: Full light
+	    Optics: Top,  Gain: 135
+	Read Speed: Normal,  Delay: 100 msec
+	Extended Dynamic Range
+	Read Height: 4.5 mm
+Read	Luminescence Endpoint
+	Full Plate
+	Integration Time: 0:01.00 (MM:SS.ss)
+	Filter Set 1 (Green)
+	    Emission: 528/20
+	    Mirror: Top 510 nm,  Gain: 135
+	Read Speed: Normal,  Delay: 100 msec
+	Extended Dynamic Range
+	Read Height: 7 mm
+
+Results
+	1	2	3	4	5	6	7	8	9	10	11	12
+A													Read 1:Lum
+													Read 2:528/20
+B													Read 1:Lum
+													Read 2:528/20
+C													Read 1:Lum
+													Read 2:528/20
+D													Read 1:Lum
+													Read 2:528/20
+E													Read 1:Lum
+													Read 2:528/20
+F													Read 1:Lum
+													Read 2:528/20
+G													Read 1:Lum
+													Read 2:528/20
+H													Read 1:Lum
+													Read 2:528/20
+

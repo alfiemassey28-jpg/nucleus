@@ -1,0 +1,50 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Absorbance at 1 cm",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Pathlength Correction",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "260:280": {
+                "Absorbance Wavelength (nm)": "280",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "260",
+                "Reader ID": "12345678",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-06-12 17:47:49"
+            },
+            "od:600": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "od",
+                "Reader ID": "12345678",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-06-12 17:47:49"
+            }
+        },
+        "rows": 192
+    }
+]

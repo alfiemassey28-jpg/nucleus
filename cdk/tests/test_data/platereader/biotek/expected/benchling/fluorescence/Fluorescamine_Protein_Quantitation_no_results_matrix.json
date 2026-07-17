@@ -1,0 +1,130 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Emission Bandwidth (nm)",
+            "Emission Optics",
+            "Emission Wavelength (nm)",
+            "Excitation Bandwidth (nm)",
+            "Excitation Optics",
+            "Excitation Wavelength (nm)",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "400/30,460/40": {
+                "Emission Bandwidth (nm)": "40",
+                "Emission Optics": "filter",
+                "Emission Wavelength (nm)": "460",
+                "Excitation Bandwidth (nm)": "30",
+                "Excitation Optics": "filter",
+                "Excitation Wavelength (nm)": "400",
+                "Gain": "60",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "1 mm",
+                "Read Modality": "Fluorescence",
+                "Read Name": "Read 1",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-01-02 07:49:46"
+            }
+        },
+        "rows": 96
+    },
+    {
+        "columns": [
+            "Data",
+            "Emission Bandwidth (nm)",
+            "Emission Optics",
+            "Emission Wavelength (nm)",
+            "Excitation Bandwidth (nm)",
+            "Excitation Optics",
+            "Excitation Wavelength (nm)",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Blank 400/30,460/40": {
+                "Emission Bandwidth (nm)": "40",
+                "Emission Optics": "filter",
+                "Emission Wavelength (nm)": "460",
+                "Excitation Bandwidth (nm)": "30",
+                "Excitation Optics": "filter",
+                "Excitation Wavelength (nm)": "400",
+                "Gain": "60",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "1 mm",
+                "Read Modality": "Fluorescence",
+                "Read Name": "Read 1",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-01-02 07:49:46"
+            }
+        },
+        "rows": 96
+    },
+    {
+        "columns": [
+            "Data",
+            "Experiment File Path",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Conc": {
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-01-02 07:49:46"
+            }
+        },
+        "rows": 96
+    }
+]

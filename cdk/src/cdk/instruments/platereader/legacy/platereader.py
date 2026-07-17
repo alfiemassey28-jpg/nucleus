@@ -1461,7 +1461,11 @@ def plot_steadystate(
 
     return g
 
-def get_avg_ctrl(ctrls, min_to_avg = 60, time_int = 5, num_pts = None):
+def get_avg_ctrl(ctrls: pd.DataFrame,
+                 data_col: str = "Data",
+                 min_to_avg: int = 60,
+                 time_int: int = 5,
+                 num_pts: int | None = None):
     """
     Compute the average control intensity over the final portion of the time trace.
 
@@ -1469,13 +1473,17 @@ def get_avg_ctrl(ctrls, min_to_avg = 60, time_int = 5, num_pts = None):
     ----------
     ctrls : pandas.DataFrame
         Control measurements for a single (Name, Read) group.
-        Must contain a column named "Data" and be time-ordered.
+        Must contain a column named `data_col` and be time-ordered.
+    data_col: str, optional
+        Column of DataFrame containing data to be averaged. Default: "Data"
     min_to_avg : int, optional
-        Number of minutes from the end of the trace to include in the average.
+        Overrides `num_pts` Number of minutes from the end of the trace to include in the average.
         Default is 60 minutes.
-    time_int : int, optional
+    time_int : int, optional (required if `min_to_avg` is not None)
         Time interval (in minutes) between measurements.
         Default is 5 minutes.
+    num_pts : int, optional
+        Number of points at the end of the time series to average.
 
     Returns
     -------
@@ -1487,8 +1495,11 @@ def get_avg_ctrl(ctrls, min_to_avg = 60, time_int = 5, num_pts = None):
     This function assumes rows are evenly spaced in time.
     """
     if num_pts is None:
-        num_pts = round(min_to_avg / time_int)
-    return np.mean(ctrls.iloc[-num_pts:]["Data"])
+        if min_to_avg is not None and time_int is not None: 
+            num_pts = round(min_to_avg / time_int)
+        else:
+            num_pts = len(ctrls[data_col])
+    return np.mean(ctrls.iloc[-num_pts:][data_col])
 
 def get_data_ctrls(df, ctrl_names = 'HPTS (10 uM)'):
     """

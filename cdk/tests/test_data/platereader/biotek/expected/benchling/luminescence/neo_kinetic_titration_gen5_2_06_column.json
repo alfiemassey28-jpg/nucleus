@@ -1,0 +1,110 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Optics",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Temperature",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "Lum": {
+                "Emission Optics": "hole",
+                "Excitation Optics": "filter",
+                "Gain": "175",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "6 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Read 1",
+                "Reader ID": "Neo_P05",
+                "Reader Type": "Synergy Neo",
+                "Start Time": "2014-09-26 08:22:38"
+            }
+        },
+        "rows": 470
+    },
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Optics",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Integral [Lum]": {
+                "Emission Optics": "hole",
+                "Excitation Optics": "filter",
+                "Gain": "175",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "6 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Read 1",
+                "Reader ID": "Neo_P05",
+                "Reader Type": "Synergy Neo",
+                "Start Time": "2014-09-26 08:22:38"
+            },
+            "[Concentration]": {
+                "Emission Optics": "nan",
+                "Excitation Optics": "nan",
+                "Gain": "nan",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Geometry": "nan",
+                "Read Height (mm)": "nan",
+                "Read Modality": "nan",
+                "Read Name": "nan",
+                "Reader ID": "Neo_P05",
+                "Reader Type": "Synergy Neo",
+                "Start Time": "2014-09-26 08:22:38"
+            }
+        },
+        "rows": 94
+    }
+]

@@ -1,0 +1,1 @@
+{"platemap_columns": ["Date", "Experiment", "Well", "Name", "Type", "pH"], "metadata_columns": ["Read", "Reader ID", "Reader Type", "Plate Type", "Plate ID", "Start Time", "Read Modality", "Excitation Wavelength (nm)", "Emission Wavelength (nm)"], "format": "endpoint"}

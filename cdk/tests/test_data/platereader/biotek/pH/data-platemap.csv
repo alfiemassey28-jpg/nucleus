@@ -1,0 +1,7 @@
+Date,Experiment,Well,Name,Type
+2025-09-24,pH-inference-example,C4,Cytosol 1,Sample
+2025-09-24,pH-inference-example,C5,Cytosol 1,Sample
+2025-09-24,pH-inference-example,D4,Negative Control (no DNA),Negative Control
+2025-09-24,pH-inference-example,D5,mCherry,Sample
+2025-09-24,pH-inference-example,E4,Cytosol 2,Sample
+2025-09-24,pH-inference-example,E5,Cytosol 2,Sample

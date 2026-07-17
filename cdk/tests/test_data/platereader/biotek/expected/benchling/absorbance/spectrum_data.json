@@ -1,0 +1,80 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Calibrate Before Read",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start",
+            "Start Time",
+            "Step",
+            "Stop",
+            "Well"
+        ],
+        "reads": {
+            "Spectral_Scan_Test:Spectrum": {
+                "Absorbance Wavelength (nm)": "300",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "Spectral_Scan_Test",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-03-07 11:31:30"
+            }
+        },
+        "rows": 288
+    },
+    {
+        "columns": [
+            "Calibrate Before Read",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start",
+            "Start Time",
+            "Step",
+            "Stop",
+            "Well"
+        ],
+        "reads": {
+            "Mean Max OD [Spectral_Scan_Test:Spectrum]": {
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "Spectral_Scan_Test",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-03-07 11:31:30"
+            }
+        },
+        "rows": 96
+    }
+]

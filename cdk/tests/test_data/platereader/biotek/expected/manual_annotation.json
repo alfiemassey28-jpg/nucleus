@@ -1,0 +1,573 @@
+[
+    {
+        "path": "benchling/absorbance/010307_114129_BNCH654563_stdcurve_singleplate01.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 3,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/240307_114129_BNCH654563_spectralScan_example01.txt",
+        "plates": [
+            [
+                {
+                    "num_wavelengths": 5,
+                    "wavelength_field": "Absorbance Wavelength (nm)",
+                    "num_wells": 96
+                },
+                {
+                    "num_reads":1,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/240411_172731_BNCH2345883_abs450_96well_non_numeric_values.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":1,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/absorbance_error_document_example.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 1,
+                    "num_wells": 12
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/endpoint_pathlength_correct_singleplate_no_pm_in_time.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 15,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/endpoint_stdcurve_multiplate.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 3,
+                    "num_wells": 96
+                }
+            ],
+                        [
+                {
+                    "num_reads": 3,
+                    "num_wells": 96
+                }
+            ],
+            [
+                {
+                    "num_reads": 3,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/endpoint_wavelength_measurement_labels.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 2,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/Kinetic_Analysis_Mean_Slope_and_Standard_Curve_tab.txt",
+        "plates": [
+            [
+                {
+                    "num_wells": 96,
+                    "num_timepoints": 13
+                },
+                {
+                    "num_reads": 2,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/kinetic_multiplate.txt",
+        "plates": [
+            [
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_reads":4,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_reads":4,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_wells":96,
+                    "num_timepoints":6
+                },
+                {
+                    "num_reads":4,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/absorbance/spectrum_data.txt",
+        "plates": [
+            [
+                {
+                    "num_wavelengths":3,
+                    "wavelength_field":"Absorbance Wavelength (nm)",
+                    "num_wells": 96
+                },
+                {
+                    "num_reads": 1,
+                    "num_wells":96
+                }
+            ]
+        ]   
+    },
+    {
+        "path": "benchling/fluorescence/endpoint_fluorescence_polarization.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":5,
+                    "num_wells":384
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/endpoint_multiplate.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":6,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_reads":6,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_reads":6,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/endpoint_singleplate_filter_withoutStepLabel_withCalculatedValues.txt",
+        "plates": [
+            [
+                {
+                    "num_reads": 6,
+                    "num_wells":96
+                }
+
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/endpoint_singleplate_filter.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":3,
+                    "num_wells":384
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/endpoint_singleplate_monochromator_withoutStepLabel.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":2,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/Fluorescamine_Protein_Quantitation_no_results_matrix.txt",
+        "plates": [
+            [
+                {
+                    "num_reads":1,
+                    "num_wells":96
+                },
+                {
+                    "num_reads":1,
+                    "num_wells":96
+                },
+                {
+                    "num_reads":1,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/spectrum_emission_data.txt",
+        "plates": [
+            [
+                {
+                    "num_wavelengths":3,
+                    "wavelength_field":"Emission Wavelength (nm)",
+                    "num_wells": 1
+                },
+                {
+                    "num_reads":1,
+                    "num_wells":1
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/fluorescence/spectrum_excitation_data.txt",
+        "plates": [
+            [
+                {
+                    "num_wavelengths":3,
+                    "wavelength_field":"Excitation Wavelength (nm)",
+                    "num_wells": 1
+                },
+                {
+                    "num_reads":1,
+                    "num_wells":1
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/luminescence/endpoint_multiplate.txt",
+        "plates":[
+            [
+                {
+                    "num_reads":2,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_reads":2,
+                    "num_wells":96
+                }
+            ],
+            [
+                {
+                    "num_reads":2,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "benchling/luminescence/neo_kinetic_titration_gen5_2_06_column.txt",
+        "plates":[
+            [
+                {
+                    "num_timepoints":10,
+                    "num_wells":47
+                },
+                {
+                    "num_reads":2,
+                    "num_wells":47
+                }
+            ]
+        ]
+    },
+    {
+        "path":"benchling/luminescence/spectral_scan.txt",
+        "plates":[
+            [
+                {
+                    "num_wavelengths":3,
+                    "wavelength_field":"Emission Wavelength (nm)",
+                    "num_wells": 1
+                }
+            ]
+        ]
+    },
+    {
+        "path":"benchling/multi_read_modes/multiple_read_modes.txt",
+        "plates":[
+            [
+                {
+                    "num_reads":3,
+                    "num_wells":96
+                }
+            ]
+        ]
+    },
+    {
+        "path": "bnext/20260318-cytation5-pierce660_three_read-EXPERIMENT.txt",
+        "plates":[
+            [
+                {
+                    "num_reads":3,
+                    "num_wells":24
+                }
+            ]
+        ]
+    },
+    {
+        "path": "bnext/20260331-cytation5-od600-growth-rescue-pre-A19-T0.txt",
+        "plates":[
+            [
+                {
+                    "num_reads": 10,
+                    "num_wells": 96
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/20260428-211548-cytation5-pure-timecourse-gfp-PMix-AR-1132-SMix-AR-1125-QC.txt",
+        "plates":[
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells":16
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells":16
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/biotek_synergy_fluorescence_kinetics.txt",
+        "plates":[
+            [
+                {
+                    "num_timepoints":97,
+                    "num_wells":19
+                },
+                {
+                    "num_reads":4,
+                    "num_wells":19
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/cytation_dna_sweep.txt",
+        "plates":[
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/cytation_fluorescence_kinetics.txt",
+        "plates": [
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells":16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                },
+                {
+                    "num_reads":1,
+                    "num_wells": 16
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/cytation3_gfp.txt",
+        "plates": [
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells": 15
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells": 15
+                },
+                {
+                    "num_wells": 15,
+                    "num_reads": 12
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/cytation3_vio.txt",
+        "plates": [
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells":60
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells":60
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells":60
+                },
+                {
+                    "num_wavelengths":22,
+                    "wavelength_field":"Absorbance Wavelength (nm)",
+                    "num_wells":60
+                }
+            ]
+        ]
+    },
+    {
+        "path":"bnext/cytation5_gfp_endpoint.txt",
+        "plates": [
+            [
+                {
+                    "num_wells": 9,
+                    "num_reads": 2
+                }
+            ],
+            [
+                {
+                    "num_wells": 9,
+                    "num_reads": 2
+                }
+            ]
+        ]
+    },
+    {
+        "path": "bnext/synergy2-pure-timecourse-gfp_20260316-153405-synergy2-pure-timecourse-gfp-EFTu_supplementation_.txt",
+        "plates": [
+            [
+                {
+                    "num_timepoints":73,
+                    "num_wells": 25
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells": 25
+                },
+                {
+                    "num_timepoints":73,
+                    "num_wells": 25
+                },
+                {
+                    "num_wells":25,
+                    "num_reads": 16
+                }
+            ]
+        ]
+    },
+    {
+        "path": "pH/calibration.xlsx",
+        "plates": [
+            [
+                {
+                    "num_wells":96,
+                    "num_reads":2
+                }
+            ]
+        ]
+    },
+    {
+        "path": "pH/data.xlsx",
+        "plates": [
+            [
+                {
+                    "num_timepoints":465,
+                    "num_wells": 96
+                },
+                {
+                    "num_timepoints":465,
+                    "num_wells": 96
+                },
+                {
+                    "num_wells":96,
+                    "num_reads":8
+                }
+            ]
+        ]
+    }
+]

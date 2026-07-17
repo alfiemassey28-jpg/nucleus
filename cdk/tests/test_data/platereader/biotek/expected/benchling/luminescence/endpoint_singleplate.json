@@ -1,0 +1,62 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Optics",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "LUM:Lum": {
+                "Emission Optics": "filter",
+                "Excitation Optics": "filter",
+                "Gain": "135",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "4.5 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "LUM",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2022-10-10 21:15:37"
+            },
+            "NormLum": {
+                "Emission Optics": "filter",
+                "Excitation Optics": "filter",
+                "Gain": "135",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Geometry": "Top",
+                "Read Height (mm)": "4.5 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "LUM",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2022-10-10 21:15:37"
+            }
+        },
+        "rows": 192
+    }
+]

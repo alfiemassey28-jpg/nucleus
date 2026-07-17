@@ -1,0 +1,130 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Absorbance at 1 cm",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Pathlength Correction",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "A600-shaken:600": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600-shaken",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600-shaken:900 [Ref]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600-shaken:977 [Test]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600-shaken:Pathlength": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600:600": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600:900 [Ref]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600:977 [Test]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "A600:Pathlength": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "Corrected [A600-shaken:600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600-shaken",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            },
+            "Corrected [A600:600]": {
+                "Absorbance Wavelength (nm)": "600",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96-well UV-Star Half Area",
+                "Read Modality": "Absorbance",
+                "Read Name": "A600",
+                "Reader ID": "1705168",
+                "Reader Type": "Cytation5",
+                "Start Time": "2026-03-31 11:51:24"
+            }
+        },
+        "rows": 960
+    }
+]

@@ -1,0 +1,54 @@
+
+
+Software Version	3.17.17
+
+
+
+Experiment File Path:	
+Protocol File Path:	
+
+
+
+Plate Number	Plate 1
+Date	???
+Time	???
+Reader Type:	
+Reader Serial Number:	
+Reading Type	???
+
+Procedure Details
+
+Plate Type	96 WELL PLATE (Use plate lid)
+Eject plate on completion	
+Read	Fluorescence Endpoint
+	Full Plate
+	Filter Set 1
+	    Excitation: 485/20,  Emission: 528/20
+	    Mirror: Top 510 nm,  Gain: 135
+	Filter Set 2
+	    Excitation: 485/20,  Emission: 620/40
+	    Mirror: Top 510 nm,  Gain: 135
+	Time Resolved:  Delay: 100 µsec,  Collection Time: 300 µsec
+	Light Source: Xenon Flash
+	Read Speed: Normal,  Delay: 100 msec,  Measurements/Data Point: 10
+	Read Height: 7 mm
+
+Results
+	1	2	3	4	5	6	7	8	9	10	11	12
+A													485/20,528/20
+													485/20,620/40
+B													485/20,528/20
+													485/20,620/40
+C													485/20,528/20
+													485/20,620/40
+D													485/20,528/20
+													485/20,620/40
+E													485/20,528/20
+													485/20,620/40
+F													485/20,528/20
+													485/20,620/40
+G													485/20,528/20
+													485/20,620/40
+H													485/20,528/20
+													485/20,620/40
+

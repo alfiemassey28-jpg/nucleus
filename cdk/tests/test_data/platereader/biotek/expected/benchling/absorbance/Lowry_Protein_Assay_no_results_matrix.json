@@ -1,0 +1,60 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Experiment File Path",
+            "Plate ID",
+            "Plate Type",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "660": {
+                "Absorbance Wavelength (nm)": "660",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-02-08 05:27:40"
+            }
+        },
+        "rows": 96
+    },
+    {
+        "columns": [
+            "Data",
+            "Experiment File Path",
+            "Plate ID",
+            "Plate Type",
+            "Read",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Conc": {
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-02-08 05:27:40"
+            }
+        },
+        "rows": 96
+    }
+]

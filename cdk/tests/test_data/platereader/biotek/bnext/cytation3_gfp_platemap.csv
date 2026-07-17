@@ -1,0 +1,16 @@
+Date,Experiment Name,Well,Name,Type,PMix ID,[PMix] (mg/mL),Ribosome ID,[Ribosome] (uM),SMix ID,tRNA ID,[tRNA] (ug/uL),DNA ID,[DNA] (nM),[Mg-Ace] (mM),[CP] (mM),[polyP] (mM),[PPK2] (uM),[PEG] (%),PMix Vol (uL),Ribosome Vol (uL),SMix Vol (uL),tRNA Vol (uL),DNA Vol (uL),RNase Inhib Vol (uL),CP Vol (uL),PPK Vol (uL),polyP Vol (uL),Mg-Ace Vol (uL),PEG Vol (uL),Water vol (uL),Rxn Volume (uL)
+20260416,PPK-custom-Smix-controls,B14,CP/CK 8mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,0.2,,,0.4,0.5,2.37,10
+20260416,PPK-custom-Smix-controls,B16,CP/CK 8mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,0.2,,,0.4,0.5,2.37,10
+20260416,PPK-custom-Smix-controls,B18,CP/CK 8mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,0.2,,,0.4,0.5,2.37,10
+20260416,PPK-custom-Smix-controls,D14,CP/CK Negative Control (-CP),Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,,0.4,0.5,2.57,10
+20260416,PPK-custom-Smix-controls,D16,CP/CK Negative Control (-CP),Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,,0.4,0.5,2.57,10
+20260416,PPK-custom-Smix-controls,D18,CP/CK Negative Control (-CP),Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,,0.4,0.5,2.57,10
+20260416,PPK-custom-Smix-controls,F14,No CP + polyP + 18 mM Mg,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,0.6,0.9,0.5,1.47,10
+20260416,PPK-custom-Smix-controls,F16,No CP + polyP + 18 mM Mg,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,0.6,0.9,0.5,1.47,10
+20260416,PPK-custom-Smix-controls,F18,No CP + polyP + 18 mM Mg,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,,0.6,0.9,0.5,1.47,10
+20260416,PPK-custom-Smix-controls,H14,PPK/polyP + 18 mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,0.35,0.6,0.9,0.5,1.12,10
+20260416,PPK-custom-Smix-controls,H16,PPK/polyP + 18 mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,0.35,0.6,0.9,0.5,1.12,10
+20260416,PPK-custom-Smix-controls,H18,PPK/polyP + 18 mM Mg2+,Sample,Sol B,,,,3X Smix+tRNA-CP-Mg,AR-1042,,pOpen-plamGFP,149,200,1000,500,57.5,40,3,,3.33,,0.2,,,0.35,0.6,0.9,0.5,1.12,10
+20260416,PPK-custom-Smix-controls,J14,1 uM Fluorescein,Standard,,,,,,,,,,,,,,,,,,,,,,,,,,,10
+20260416,PPK-custom-Smix-controls,J16,1 uM Fluorescein,Standard,,,,,,,,,,,,,,,,,,,,,,,,,,,10
+20260416,PPK-custom-Smix-controls,J18,1 uM Fluorescein,Standard,,,,,,,,,,,,,,,,,,,,,,,,,,,10

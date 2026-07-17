@@ -1,0 +1,52 @@
+[
+    {
+        "columns": [
+            "Data",
+            "Delay",
+            "Dynamic Range",
+            "Emission Bandwidth (nm)",
+            "Emission Optics",
+            "Emission Wavelength (nm)",
+            "Excitation Optics",
+            "Experiment File Path",
+            "Filter Set",
+            "Gain",
+            "Integration Time",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Geometry",
+            "Read Height (mm)",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Filter Lum:460/40": {
+                "Emission Bandwidth (nm)": "40",
+                "Emission Optics": "monochromator",
+                "Emission Wavelength (nm)": "460",
+                "Excitation Optics": "monochromator",
+                "Gain": "135",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Geometry": "Top 400 nm",
+                "Read Height (mm)": "7 mm",
+                "Read Modality": "Luminescence",
+                "Read Name": "Filter Lum",
+                "Reader ID": "Unknown",
+                "Reader Type": "Synergy H1",
+                "Start Time": "2024-02-08 22:47:01"
+            }
+        },
+        "rows": 96
+    }
+]

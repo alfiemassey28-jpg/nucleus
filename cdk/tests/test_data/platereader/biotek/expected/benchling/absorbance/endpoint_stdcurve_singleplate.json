@@ -1,0 +1,58 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Delay",
+            "Experiment File Path",
+            "Measurements/Data Point",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "630nmAbsRead:630": {
+                "Absorbance Wavelength (nm)": "630.0",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "630nmAbsRead",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2022-10-10 21:00:04"
+            },
+            "Blank 630nmAbsRead:630": {
+                "Absorbance Wavelength (nm)": "630.0",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "Absorbance",
+                "Read Name": "630nmAbsRead",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2022-10-10 21:00:04"
+            },
+            "[Concentration]": {
+                "Absorbance Wavelength (nm)": "nan",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE (Use plate lid)",
+                "Read Modality": "nan",
+                "Read Name": "nan",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2022-10-10 21:00:04"
+            }
+        },
+        "rows": 288
+    }
+]

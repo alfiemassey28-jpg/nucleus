@@ -1,0 +1,81 @@
+[
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Experiment File Path",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Time",
+            "Well"
+        ],
+        "reads": {
+            "420": {
+                "Absorbance Wavelength (nm)": "420",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-02-09 06:14:21"
+            }
+        },
+        "rows": 1248
+    },
+    {
+        "columns": [
+            "Absorbance Wavelength (nm)",
+            "Data",
+            "Experiment File Path",
+            "Plate ID",
+            "Plate Type",
+            "Protocol File Path",
+            "Read",
+            "Read Modality",
+            "Read Name",
+            "Read Range",
+            "Read Speed",
+            "Reader ID",
+            "Reader Type",
+            "Reading Type",
+            "Software Version",
+            "Start Time",
+            "Well"
+        ],
+        "reads": {
+            "Mean V [420]": {
+                "Absorbance Wavelength (nm)": "420.0",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "Absorbance",
+                "Read Name": "Read 1",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-02-09 06:14:21"
+            },
+            "[Concentration]": {
+                "Absorbance Wavelength (nm)": "nan",
+                "Plate ID": "Plate 1",
+                "Plate Type": "96 WELL PLATE",
+                "Read Modality": "nan",
+                "Read Name": "nan",
+                "Reader ID": "n/a",
+                "Reader Type": "n/a",
+                "Start Time": "2006-02-09 06:14:21"
+            }
+        },
+        "rows": 192
+    }
+]
