@@ -64,6 +64,7 @@ scikit-image = "^0.26.0"
 ome-zarr = "^0.16.0"
 ngff-zarr = "^0.34.0"
 pint = "^0.25.3"
+pyarrow = "^18.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
@@ -109,6 +110,9 @@ minversion = "6.0"
 addopts = "-ra"
 testpaths = [
     "tests",
+]
+markers = [
+    "network: test requires network access (deselect with '-m \"not network\"')",
 ]
 
 [tool.poetry-dynamic-versioning]

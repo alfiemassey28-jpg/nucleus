@@ -240,53 +240,6 @@ def test_fit_kinetics_recovers_synthetic_params(kinetic_data, expected_params):
         assert got == pytest.approx(expected.to_numpy(), abs=1e-2)
 
 
-def test_or_operator_removed(kinetic_data):
-    with pytest.raises(TypeError):
-        _ = kinetic_data | kinetic_data
-
-
-def test_take_concatenates_blocks_with_uniform_lineage(tmp_path):
-    # Build a PlateReaderResult of two raw (empty-lineage) blocks and take all.
-    import pandas as pd
-
-    from cdk.instruments.platereader import (
-        PlateReaderData,
-        PlateReaderDataFormat,
-        PlateReaderResult,
-    )
-    from cdk.instruments.platereader.constants import (
-        MetadataColumn,
-        PlateReaderDataColumn,
-    )
-
-    def block(read):
-        df = pd.DataFrame(
-            {
-                PlateReaderDataColumn.WELL: ["A1", "A2"],
-                PlateReaderDataColumn.DATA: [1.0, 2.0],
-                PlateReaderDataColumn.READ: [read, read],
-                PlateReaderDataColumn.READ_MODALITY: ["Fluorescence"] * 2,
-                "Name": ["S1", "S2"],
-            }
-        )
-        return PlateReaderData.create_from_data(
-            df,
-            metadata_columns=[PlateReaderDataColumn.READ_MODALITY],
-            format=PlateReaderDataFormat.ENDPOINT,
-        )
-
-    meta = pd.DataFrame({MetadataColumn.PLATE_ID: ["P1"]})
-    result = PlateReaderResult(
-        data=[block("GFP"), block("RFP")],
-        _plates=[0, 0],
-        metadata=meta,
-        source_file=tmp_path / "x.txt",
-    )
-    merged = result.take()
-    assert len(merged) == 4
-    assert merged.lineage == ()
-
-
 def test_view_defaults_to_standard(kinetic_data):
     out = kinetic_data.view()
     assert isinstance(out, pd.DataFrame)

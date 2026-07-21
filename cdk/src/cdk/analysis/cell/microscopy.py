@@ -40,6 +40,13 @@ log.info(f"CUDA is available: {torch.cuda.is_available()}")
 MAX_COMPARISON_TIMEPOINTS = 9
 DEFAULT_SAMPLE_COUNT = 50000
 
+# Storage options passed to pd.read_parquet when loading from a URL. A
+# browser-like User-Agent is required to avoid being rejected by the server.
+PARQUET_STORAGE_OPTIONS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+}
+
 # List of default segmentation channels. In the absence of a specific
 # channel, we'll use the first channel with one of these names that we find.
 DEFAULT_SEGMENT_CHANNELS = [
@@ -62,7 +69,7 @@ ANALYSIS_REGIONPROPS = {
     "intensity_std": "Intensity STD",
     "intensity_min": "Intensity Min",
     "eccentricity": "Eccentricity",
-    # "centroid": "Centroid",
+    "centroid": "Centroid",
     # "centroid_weighted": "Centroid Weighted",
     # "centroid_local": "Centroid Local",
     # "slice": "Slice"
@@ -172,11 +179,10 @@ def _get_spacing_microns(multiscales: nz.Multiscales, axes="yx") -> List[float]:
     log.debug(f"Determined spacing for axes {axes}: {spacing}")
     return spacing
 
-
 def process_frame(data: da.Array, segment_channel: int, model: models.CellposeModel, spacing, pbar: tqdm):
     log.debug(f"Processing frame {data.shape} ch {segment_channel} shape {data.shape}")
 
-    mask, flows, styles = model.eval(data[segment_channel])
+    mask, flows, styles = model.eval(data[segment_channel].compute())
 
     log.debug("Calculating properties")
 
@@ -243,19 +249,19 @@ def process_dataset(
                 log.debug(f"Found channel: {channel.label} #{channel.color}")
                 channel_labels.append(channel.label)
 
-            if segment_channel is None:
-                segment_channels = DEFAULT_SEGMENT_CHANNELS
-                if segment_channel is not None:
-                    segment_channels = segment_channel
+            segment_channels = DEFAULT_SEGMENT_CHANNELS
 
-                for chan in segment_channels:
-                    if chan in channel_labels:
-                        segment_channel_index = channel_labels.index(chan)
-                        log.debug(f"Found segmentation channel: {chan} -> {segment_channel_index}")
-                        break
-                else:
-                    log.error(f"Could not find a channel to segment on. Looking for: {segment_channels}; image has: {channel_labels}")
-                    return
+            if segment_channel is not None:
+                segment_channels = [segment_channel]
+
+            for chan in segment_channels:
+                if chan in channel_labels:
+                    segment_channel_index = channel_labels.index(chan)
+                    log.debug(f"Found segmentation channel: {chan} -> {segment_channel_index}")
+                    break
+            else:
+                log.error(f"Could not find a channel to segment on. Looking for: {segment_channels}; image has: {channel_labels}")
+                return
 
             dim_t = image.dims.index('t')
             dim_y = image.dims.index('y')
@@ -340,12 +346,21 @@ def process_datasets(dataset_paths, pyramid_level=2):
 def load(data_path: str | Path, platemap_path: str | Path | None=None, sample: int=DEFAULT_SAMPLE_COUNT):
     log.debug(f"Loading microscopy data from {data_path}")
 
-    if type(data_path) == str:
+    # URLs must be kept as strings — Path() would collapse the "//" in the
+    # scheme. Detect them before any Path conversion.
+    is_url = isinstance(data_path, str) and "://" in data_path
+
+    if not is_url and type(data_path) == str:
         data_path = Path(data_path)
 
-    if data_path.name.endswith(".parquet"):
-        data = pd.read_parquet(data_path)
-    elif data_path.name.endswith(".csv"):
+    name = data_path if is_url else data_path.name
+
+    if name.endswith(".parquet"):
+        if is_url:
+            data = pd.read_parquet(data_path, storage_options=PARQUET_STORAGE_OPTIONS)
+        else:
+            data = pd.read_parquet(data_path)
+    elif name.endswith(".csv"):
         data = pd.read_csv(data_path)
     else:
         log.error(f"Unrecognized liposome analysis data filetype: {data_path}")
@@ -377,17 +392,25 @@ def _label_column(data: pd.DataFrame) -> str:
         if col in data.columns:
             return col
 
-def plot_intensity(data: pd.DataFrame, channel="GFP", *kwargs):
+def plot_intensity(data: pd.DataFrame, channel="GFP", **kwargs):
+    params = dict(
+        x="Timepoint",
+        y=f"Intensity Norm ({channel})",
+        hue=_label_column(data),
+        kind="line",
+        height=6,
+        aspect=2
+    )
+
+    params.update(kwargs)
+
     g = sns.relplot(
-    data=data,
-    x="Timepoint",
-    y="Intensity Mean (GFP)",
-    hue=_label_column(data),
-    kind="line"
+        data=data,
+        *params
     )
 
     g.set_xlabels("Timepoint")
-    g.set_ylabels("Mean Intensity (a.u.)")
+    g.set_ylabels("Normalized Mean Intensity (a.u.)")
 
 def plot_size(data: pd.DataFrame, timepoints=None):
     if timepoints is None:
