@@ -44,7 +44,7 @@ def plot_curves(
         **kwargs: Additional keyword arguments forwarded to sns.relplot.
     """
     if "row" not in kwargs and "col" in kwargs:
-        kwargs["col_wrap"] = min(data[kwargs["col"]].nunique(), 4)
+        kwargs.setdefault("col_wrap", min(data[kwargs["col"]].nunique(), 4))
     if facet_kws is not None:
         kwargs["facet_kws"] = facet_kws
 

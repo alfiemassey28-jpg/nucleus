@@ -39,6 +39,18 @@ _MINIMAL_METADATA_COLUMNS = REQUIRED_METADATA_COLUMNS - {
     MetadataColumn.DATE,
 }
 
+# Friendly kwarg -> canonical column for PlateReaderData.select(). Keeps the
+# row-selection API pandas-free for scientists; every field uses isin, so a
+# scalar and a list of values behave the same (membership).
+_SELECT_FIELDS = {
+    "well": PlateReaderDataColumn.WELL,
+    "read": PlateReaderDataColumn.READ,
+    "read_name": PlateReaderDataColumn.READ_NAME,
+    "modality": PlateReaderDataColumn.READ_MODALITY,
+    "name": PlatemapColumn.NAME,
+    "type": PlatemapColumn.TYPE,
+}
+
 import logging
 
 log = logging.getLogger(__name__)
@@ -188,13 +200,19 @@ class PlateReaderData:
             completion_threshold=completion_threshold,
         )
         blank_ref = next(
-            (t.params.get("blank_name") for t in self.lineage if t.kind == "blank"),
+            (
+                t.params.get("blank_name")
+                for t in self.lineage
+                if t.kind == "blank"
+            ),
             None,
         )
         results["Blanked"] = blank_ref
         results["Normalized to"] = self.normalized_to
         if self.is_standardized:
-            standardize_t = next(t for t in self.lineage if t.kind == "standardize")
+            standardize_t = next(
+                t for t in self.lineage if t.kind == "standardize"
+            )
             results["Standardized to"] = standardize_t.output_column
         return Kinetics(
             results=results,
@@ -470,11 +488,17 @@ class PlateReaderData:
 
     @property
     def platemap(self):
-        return self.data[list(self.platemap_columns)].drop_duplicates()
+        # Order by the frame, not the (unordered) platemap_columns set:
+        # merge_platemap preserves the platemap's original column order in
+        # data.columns, so intersecting in frame order keeps it intact.
+        cols = [c for c in self.data.columns if c in self.platemap_columns]
+        return self.data[cols].drop_duplicates(ignore_index=True)
 
     @property
     def metadata(self):
-        return self.data[list(self.metadata_columns)].drop_duplicates()
+        # Order by the frame, not the (unordered) metadata_columns set.
+        cols = [c for c in self.data.columns if c in self.metadata_columns]
+        return self.data[cols].drop_duplicates(ignore_index=True)
 
     def _ordered_view_columns(
         self,
@@ -520,7 +544,12 @@ class PlateReaderData:
             raise ValueError(f"Unrecognized option for `level`: '{level}'")
 
         if level == "full":
-            select_columns = list(self.data.columns)
+            # Everything, but ordered: known columns to the left per
+            # COLUMN_DISPLAY_ORDER, then any unrecognized columns appended.
+            known = set(COLUMN_DISPLAY_ORDER)
+            select_columns = [
+                c for c in COLUMN_DISPLAY_ORDER if c in self.data.columns
+            ] + [c for c in self.data.columns if c not in known]
         elif level == "standard":
             modalities = (
                 self.data[PlateReaderDataColumn.READ_MODALITY]
@@ -539,6 +568,7 @@ class PlateReaderData:
                 REQUIRED_DATA_COLUMNS
                 | REQUIRED_METADATA_COLUMNS
                 | REQUIRED_READ_COLUMNS
+                | REQUIRED_PLATEMAP_COLUMNS
                 | modality_cols
             )
             if self.format == PlateReaderDataFormat.KINETIC:
@@ -592,11 +622,201 @@ class PlateReaderData:
             select_columns += [c for c in self.data.columns if c in extra]
         return self.data[select_columns]
 
-    def __getitem__(self, key):
-        return self.data[key]
+    def __getitem__(self, key) -> "PlateReaderData":
+        """Row-select by boolean mask (or slice) -> a new PlateReaderData,
+        preserving format, lineage, and metadata. Use `.data[...]` for
+        column access or positional/label indexing of the raw frame."""
+        if isinstance(key, (str, int)) or (
+            isinstance(key, list) and any(isinstance(k, str) for k in key)
+        ):
+            raise TypeError(
+                "PlateReaderData[...] selects rows by boolean mask and "
+                "returns a PlateReaderData; use `.data[...]` for column or "
+                "positional access."
+            )
+        rows = self.data[key]
+        if rows.empty:
+            raise ValueError("Row selection produced no rows.")
+        return dataclasses.replace(self, data=rows.reset_index(drop=True))
+
+    # Explicitly non-iterable: since subscription selects rows, the old-style
+    # iteration protocol (prd[0], prd[1], ... until IndexError) would produce
+    # a broken iterator. `__iter__ = None` makes iter() raise a clean
+    # TypeError instead of silently falling back to __getitem__.
+    __iter__ = None
 
     def __len__(self) -> int:
         return len(self.data)
+
+    @staticmethod
+    def _concat(blocks: list["PlateReaderData"]) -> "PlateReaderData":
+        """Concatenate same-source blocks into one, unioning columns.
+
+        The single merge primitive: ``__or__`` (the 2-block operator form) and
+        ``PlateReaderResult.take`` (the n-ary form) both delegate here.
+        ``take`` deliberately passes the whole list rather than folding with
+        ``|`` — format resolution and the warnings below run in one pass over
+        all blocks, whereas left-associative ``a | b | c`` would run them
+        pairwise and could double-fire.
+
+        Merge is only well-defined when lineages match (§5.2); blocks straight
+        out of a PlateReaderResult share an empty/uniform lineage.
+        """
+        first = blocks[0]
+        # Compare lineages by equality, NOT via a set: Transform carries a dict
+        # `params` field and is therefore unhashable, so {b.lineage ...} would
+        # raise TypeError.
+        if any(b.lineage != first.lineage for b in blocks):
+            raise ValueError(
+                "Cannot concatenate blocks with differing lineages; "
+                "merge is only defined for identical transform histories."
+            )
+        # Only the required schema needs to line up across blocks; optional
+        # columns (e.g. modality-specific optics metadata) are allowed to
+        # differ, since filter vs. monochromator reads legitimately carry
+        # different sets of those (§ constants.STANDARD_READ_COLUMNS_BY_MODALITY).
+        required = (
+            REQUIRED_DATA_COLUMNS
+            | REQUIRED_METADATA_COLUMNS
+            | REQUIRED_READ_COLUMNS
+        )
+        if any(b.format == PlateReaderDataFormat.KINETIC for b in blocks):
+            required = required | {PlateReaderDataColumn.TIME}
+        first_required = set(first.data.columns) & required
+        for b in blocks[1:]:
+            b_required = set(b.data.columns) & required
+            if b_required != first_required:
+                log.warning(
+                    "Combining PlateReaderData blocks whose required "
+                    "columns don't match (%s vs. %s); merged rows for "
+                    "the missing columns will be NaN.",
+                    sorted(first_required),
+                    sorted(b_required),
+                )
+
+        _ENDPOINT_SPECTRUM = {
+            PlateReaderDataFormat.ENDPOINT,
+            PlateReaderDataFormat.SPECTRUM,
+        }
+        result_format = first.format
+        for b in blocks[1:]:
+            if b.format == result_format:
+                continue
+            if {result_format, b.format} == _ENDPOINT_SPECTRUM:
+                log.warning(
+                    "Combining 'endpoint' and 'spectrum' data; result "
+                    "will be 'endpoint'."
+                )
+                result_format = PlateReaderDataFormat.ENDPOINT
+            else:
+                raise ValueError(
+                    f"Cannot combine read types {result_format} and "
+                    f"{b.format}"
+                )
+
+        combined = pd.concat(
+            [b.data for b in blocks],
+            axis=0,
+            ignore_index=True,
+            sort=False,
+        )
+        platemap_columns = set().union(*(b.platemap_columns for b in blocks))
+        metadata_columns = set().union(*(b.metadata_columns for b in blocks))
+        return PlateReaderData(
+            data=combined,
+            platemap_columns=platemap_columns,
+            metadata_columns=metadata_columns,
+            format=result_format,
+            lineage=first.lineage,
+        )
+
+    def __or__(self, other: object) -> "PlateReaderData":
+        """Merge two blocks by row union: ``a | b``.
+
+        Convenience 2-block form of ``_concat``; shares its semantics (lineages
+        must match, required schema must line up, optional columns union,
+        endpoint+spectrum downgrades to endpoint). Self-merge ``a | a`` is
+        allowed and duplicates rows. Returns ``NotImplemented`` for a
+        non-``PlateReaderData`` operand so Python raises ``TypeError``.
+        """
+        if not isinstance(other, PlateReaderData):
+            return NotImplemented
+        return PlateReaderData._concat([self, other])
+
+    @staticmethod
+    def _as_select_list(value) -> list:
+        """Normalize a select() value to a list. A bare str is a scalar
+        (wrapped), not an iterable of characters."""
+        if isinstance(value, str) or not isinstance(
+            value, (list, tuple, set, pd.Series, pd.Index)
+        ):
+            return [value]
+        return list(value)
+
+    def select(
+        self,
+        *,
+        well=None,
+        read=None,
+        read_name=None,
+        modality=None,
+        name=None,
+        type=None,
+    ) -> "PlateReaderData":
+        """Row-select by plain-language keyword fields -> a new
+        PlateReaderData (format, lineage, and metadata preserved).
+
+        Each field maps to a column in the underlying frame:
+
+            well       -> Well          name  -> Name
+            read       -> Read          type  -> Type
+            read_name  -> Read Name     modality -> Read Modality
+
+        Each value may be a single value or a list; a field matches rows whose
+        column value is any of them (membership). Multiple fields are AND-ed::
+
+            block.select(modality="Fluorescence")
+            block.select(type="Standard", read_name="fluor")
+            block.select(read=["fluor:579,616", "od:600"])
+
+        Explicit keyword-only params (so editors can hint them); a field left
+        as None is treated as "not provided". Raises TypeError if no field is
+        given, KeyError if a field's column is not present (e.g. no platemap
+        merged), and ValueError if nothing matches.
+
+        `type` deliberately shadows the builtin (matches the `Type` column);
+        the shadow is confined to this method, which never calls `type()`.
+        """
+        provided = {
+            key: value
+            for key, value in (
+                ("well", well),
+                ("read", read),
+                ("read_name", read_name),
+                ("modality", modality),
+                ("name", name),
+                ("type", type),
+            )
+            if value is not None
+        }
+        if not provided:
+            raise TypeError(
+                "select() needs at least one field; valid fields: "
+                f"{sorted(_SELECT_FIELDS)}"
+            )
+        mask = pd.Series(True, index=self.data.index)
+        for key, value in provided.items():
+            col = _SELECT_FIELDS[key]
+            if col not in self.data.columns:
+                raise KeyError(
+                    f"Cannot select by '{key}': column '{col}' is not "
+                    "present (was a platemap merged?)."
+                )
+            values = self._as_select_list(value)
+            if key == "modality":
+                values = [ReadModality(v) for v in values]
+            mask &= self.data[col].isin(values)
+        return self[mask]
 
     @property
     def columns(self):
@@ -632,11 +852,7 @@ class PlateReaderData:
                 role = t.output_role
                 if isinstance(role, Quantity):
                     _name = f"Estimated {role.name}"
-                    return (
-                        f"{_name} ({role.units})"
-                        if role.units
-                        else _name
-                    )
+                    return f"{_name} ({role.units})" if role.units else _name
                 if role == Measurement.NORMALIZED:
                     target = self.normalized_to
                     m = self._modality_label()
@@ -710,8 +926,11 @@ class PlateReaderData:
         else:
             x = kwargs.pop("x", "Name")
         return plotting.plot_plate(
-            df, y=self.active_data_column, x=x,
-            y_label=self._y_label(self.active_data_column), **kwargs
+            df,
+            y=self.active_data_column,
+            x=x,
+            y_label=self._y_label(self.active_data_column),
+            **kwargs,
         )
 
     def __eq__(self, other: object) -> bool:
@@ -846,62 +1065,6 @@ class PlateReaderResult(Sequence[PlateReaderData]):
     def plate(self) -> _PlateAccessor:
         return _PlateAccessor(self)
 
-    @staticmethod
-    def _concat(blocks: list[PlateReaderData]) -> PlateReaderData:
-        """Concatenate same-source blocks. Merge is only well-defined when
-        lineages match (§5.2); blocks straight out of a PlateReaderResult
-        share an empty/uniform lineage."""
-        first = blocks[0]
-        # Compare lineages by equality, NOT via a set: Transform carries a dict
-        # `params` field and is therefore unhashable, so {b.lineage ...} would
-        # raise TypeError.
-        if any(b.lineage != first.lineage for b in blocks):
-            raise ValueError(
-                "Cannot concatenate blocks with differing lineages; "
-                "merge is only defined for identical transform histories."
-            )
-        cols = set(first.data.columns)
-        for b in blocks[1:]:
-            if set(b.data.columns) != cols:
-                raise ValueError(
-                    "Cannot combine PlateReaderData with different columns"
-                )
-
-        _ENDPOINT_SPECTRUM = {
-            PlateReaderDataFormat.ENDPOINT,
-            PlateReaderDataFormat.SPECTRUM,
-        }
-        result_format = first.format
-        for b in blocks[1:]:
-            if b.format == result_format:
-                continue
-            if {result_format, b.format} == _ENDPOINT_SPECTRUM:
-                log.warning(
-                    "Combining 'endpoint' and 'spectrum' data; result "
-                    "will be 'endpoint'."
-                )
-                result_format = PlateReaderDataFormat.ENDPOINT
-            else:
-                raise ValueError(
-                    f"Cannot combine read types {result_format} and "
-                    f"{b.format}"
-                )
-
-        combined = pd.concat(
-            [b.data[list(first.data.columns)] for b in blocks],
-            axis=0,
-            ignore_index=True,
-        )
-        platemap_columns = set().union(*(b.platemap_columns for b in blocks))
-        metadata_columns = set().union(*(b.metadata_columns for b in blocks))
-        return PlateReaderData(
-            data=combined,
-            platemap_columns=platemap_columns,
-            metadata_columns=metadata_columns,
-            format=result_format,
-            lineage=first.lineage,
-        )
-
     def take(
         self,
         which: list[int] | PlateReaderDataFormat | str | None = None,
@@ -923,20 +1086,23 @@ class PlateReaderResult(Sequence[PlateReaderData]):
                 modality = ReadModality(modality)
             filtered = []
             for item in items:
-                if PlateReaderDataColumn.READ_MODALITY not in item.data.columns:
+                if (
+                    PlateReaderDataColumn.READ_MODALITY
+                    not in item.data.columns
+                ):
                     continue
-                rows = item.data[
+                mask = (
                     item.data[PlateReaderDataColumn.READ_MODALITY] == modality
-                ]
-                if not rows.empty:
-                    filtered.append(dataclasses.replace(item, data=rows))
+                )
+                if mask.any():
+                    filtered.append(item[mask])
             items = filtered
 
         if not items:
             raise ValueError(
                 f"No blocks found for which={which!r}, modality={modality!r}"
             )
-        return self._concat(items)
+        return PlateReaderData._concat(items)
 
     # def metadata(self) -> pd.DataFrame:
     #     return pd.concat([d.metadata for d in self.data]).drop_duplicates()
