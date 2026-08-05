@@ -157,9 +157,9 @@ def _rename_regionprops(prop_labels: List[str], channel_labels: List[str]) -> Li
     return new_labels
 
 
-def _get_spacing_microns(multiscales: nz.Multiscales, axes="yx") -> List[float]:
+def _get_spacing_microns(multiscales: nz.Multiscales, axes="yx", pyramid_level=0) -> List[float]:
     target_axes = list(axes)
-    coordinateTransformations = multiscales.metadata.datasets[0].coordinateTransformations
+    coordinateTransformations = multiscales.metadata.datasets[pyramid_level].coordinateTransformations
     ureg = pint.UnitRegistry()
 
     spacing = list()
@@ -274,7 +274,7 @@ def process_dataset(
             full_height = multiscales.images[0].data.shape[image.dims.index('y')]
             full_width = multiscales.images[0].data.shape[image.dims.index('x')]
 
-            pixel_spacing = _get_spacing_microns(multiscales)
+            pixel_spacing = _get_spacing_microns(multiscales, pyramid_level=pyramid_level)
 
             if write_labels:
                 # Only create this array if we need it to track labels
@@ -395,7 +395,7 @@ def _label_column(data: pd.DataFrame) -> str:
 def plot_intensity(data: pd.DataFrame, channel="GFP", **kwargs):
     params = dict(
         x="Timepoint",
-        y=f"Intensity Norm ({channel})",
+        y=f"Intensity Mean ({channel})",
         hue=_label_column(data),
         kind="line",
         height=6,
@@ -436,7 +436,7 @@ def plot_summary(data: pd.DataFrame):
     ax = sns.lineplot(
         data=data,
         x="Timepoint",
-        y="Intensity Norm (GFP)",
+        y="Intensity Mean (GFP)",
         hue=_label_column(data),
         ax=axes[0]
         )
@@ -472,7 +472,7 @@ def plot_fogplot(data: pd.DataFrame):
     g = sns.catplot(
         data=data,
         x="Timepoint",
-        y="Intensity Norm (GFP)",
+        y="Intensity Mean (GFP)",
         dodge=False,
         kind="strip",
         size=2,
@@ -494,7 +494,7 @@ def plot_fogplot_compare(data):
     g = sns.catplot(
         data=data[data["Timepoint"].isin(timepoints)],
         x="Timepoint",
-        y="Intensity Norm (GFP)",
+        y="Intensity Mean (GFP)",
         hue=_label_column(data),
         dodge=True,
         kind="strip",
