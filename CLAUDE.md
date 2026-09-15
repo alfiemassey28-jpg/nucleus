@@ -1,6 +1,6 @@
 # CLAUDE.md (cdk)
 
-Development guide for the `cdk` Python package. The user-facing pipeline docs are at [docs/discovery_plate_pipeline.md](docs/discovery_plate_pipeline.md) — start there for the workflow itself; this file covers how to develop in the package.
+Development guide for the `cdk` Python package. The user-facing pipeline docs are at [docs/discovery_plate_pipeline.md](docs/discovery_plate_pipeline.md) — start there for the workflow itself; this file covers how to develop in the package. Microscopy has its own reference at [docs/microscopy.md](docs/microscopy.md).
 
 ## Commands
 
@@ -49,11 +49,18 @@ src/cdk/
 │   ├── platereader/                            plate-reader object API (see "Plate Reader Analysis")
 │   └── opentrons/                              Opentrons helpers (config, logging)
 ├── analysis/             scientific analysis on parsed data
+│   ├── cell/
+│   │   ├── raw_image_process.py                plate zarr → Cellpose → measurement CSV (see "Microscopy Analysis")
+│   │   ├── analysis.py                         measurement CSV → population plots; owns the shared column/channel naming
+│   │   ├── segmentation_qc.py                  per-object crops with mask outlines (plot_cell_grid)
+│   │   └── microscopy.py                       deprecated shim — re-exports the three above
 │   ├── cytosol/
 │   │   ├── analysis.py                         kinetic_analysis, normalize_data_to_standards, plot_curves
 │   │   └── db.py                               CytosolDB (on-disk experiment database)
 │   └── utils/
 │       └── fitting.py                          curve-fit functions (sigmoid_drift, etc.)
+├── lib/
+│   └── imaging.py                              sphere_volume, normalized_sphere_intensity
 ├── viz/
 │   └── plotting.py                             shared plot helpers: plot_curves, plot_bars, plot_plate
 ├── logging/                                    logging configuration
@@ -156,6 +163,39 @@ Caveats: the module keeps **mutable module-level state** (`set_active_data_colum
 as a `NamedTuple` — distinct from, and not interchangeable with, the new frozen-dataclass
 `PlateReaderData`. Treat it as a frozen reference implementation: prefer the object API for new code,
 and don't extend the legacy module.
+
+## Microscopy Analysis
+
+Cellpose segmentation and single-liposome analysis of high-content microscopy data. Full reference in [docs/microscopy.md](docs/microscopy.md) — that document describes current behavior as-is, including known rough edges.
+
+`analysis/cell/` is a package of three pipeline-stage modules:
+
+| Module | Role |
+|---|---|
+| [raw_image_process.py](src/cdk/analysis/cell/raw_image_process.py) | Plate zarr → Cellpose → per-object measurements → CSV. Also owns the NGFF accessors and the Cellpose model lifecycle. GPU-bound, run once per dataset. |
+| [analysis.py](src/cdk/analysis/cell/analysis.py) | CSV/parquet → optional platemap merge → population plots. Pandas + seaborn only; no zarr, no GPU. |
+| [segmentation_qc.py](src/cdk/analysis/cell/segmentation_qc.py) | CSV **and** zarr → per-object crops with mask outlines (`plot_cell_grid`). |
+
+`raw_image_process` and `analysis` communicate only through the CSV on disk. `segmentation_qc` spans both — it reads the CSV to pick objects but the zarr for pixels, and re-runs Cellpose when stored labels are missing or stale, so it needs the plate itself and a GPU. `plot_cell_grid`'s `image_path` takes a local path or a URL (`https://`, `s3://`); remote works but is slow, since every frame is fetched whole.
+
+[microscopy.py](src/cdk/analysis/cell/microscopy.py) remains as a **deprecated shim** re-exporting the public surface, so existing notebooks keep working; new code should import from the owning module or from the package (`from cdk.analysis.cell import load, plot_cell_grid`). Importing the package pulls in torch and cellpose via `raw_image_process` — import `analysis` directly to avoid them. `lib/` still has no `__init__.py` and resolves as an implicit namespace package.
+
+**Input.** An OME-NGFF v0.5 HCS plate zarr produced upstream by `cephla-ingest` (in [instrument/cephla/](../instrument/cephla/), outside this package). Layout is `<row>/<col>/<field>/<pyramid level>`, axes `t, c, z, y, x`, spatial units micrometers, one `scale` coordinate transform per pyramid level. Channel labels come from `ome.omero.channels[].label`. Opened with `ngff_zarr.from_hcs_zarr`.
+
+**Processing.** `process_dataset(dataset_path, pyramid_level=0, write_labels=False, segment_channel=None, target_wells=None, target_timepoints=None)` walks wells → fields → timepoints. Per frame, `process_frame` runs Cellpose on the segmentation channel, then `skimage.measure.regionprops_table` on all channels, and appends the result to `<dataset_name>.csv` **relative to the current working directory** (an existing CSV is first renamed to `<name>.csv.<ctime ISO8601>`). `process_datasets(paths, pyramid_level=2)` wraps a list — note the differing default.
+
+- **Segmentation channel:** the first match from `DEFAULT_SEGMENT_CHANNELS = ["Rhodamine", "Alexa Fluor 647"]` unless overridden. These are membrane dyes — segmentation runs on the membrane, not the reporter. No match logs an error and `return`s, abandoning the whole dataset.
+- **Pixel spacing:** `_get_spacing_microns` reads the level's `scale` transform and converts via `pint`, so measurements stay in real units at any pyramid level. Object size *in pixels* still changes 4× per level, which is what Cellpose responds to. `pyramid_level` is effectively the only segmentation knob exposed.
+- **Cellpose usage:** `models.CellposeModel(gpu=True)` once per dataset, then `model.eval(frame)` with **no** `diameter`, `flow_threshold`, `cellprob_threshold`, `normalize`, or `batch_size`; `flows`/`styles` are discarded and frames are not batched. Because `data` is already `data[t]`, the array reaching `eval` is `(1, y, x)` — a singleton z, not a 2D plane. Segmentation quality is not measured anywhere: no QC output, no mask overlay, no test.
+- **Derived measurements:** `Volume (um^3)` and `Intensity Norm` come from `sphere_volume` / `normalized_sphere_intensity` in [lib/imaging.py](src/cdk/lib/imaging.py); `Circularity` is `4π·area/perimeter²`. `_rename_regionprops` maps scikit-image slugs to display names via `ANALYSIS_REGIONPROPS`, appending ` (channel)` for names in `ANALYSIS_REGIONPROPS_WITH_CHANNEL`. A list value in `ANALYSIS_REGIONPROPS` names each axis of a multi-valued property (`centroid` → `Centroid Y (um)`, `Centroid X (um)`); CSVs written before that carry a duplicated `Centroid` column, which `pd.read_csv` surfaces as `Centroid`/`Centroid.1` and `segmentation_qc` still reads.
+
+**Output.** One CSV row per object per timepoint per well: geometry columns in µm, per-channel `Intensity Mean/Max/STD/Min/Sum/Norm`, plus `Timepoint`, `Dataset`, `Well` (the well path with `/` stripped, e.g. `M4`), and `Pyramid Level` (the level the run was measured at — `plot_cell_grid` defaults to it rather than making the caller remember). `Label` is Cellpose's per-frame integer and is **not stable across timepoints** — each frame is segmented independently and relabelled `1..N`. Verified on the playground dataset: a label's centroid moves 190–1600 µm between consecutive frames while the nearest actual object is 13–21 µm away, and that nearest object carries the same id 0–15% of the time. Grouping by `Label` yields convincing but fictitious single-object traces; all time-series views must be population aggregates until a tracking step exists. See [docs/microscopy.md](docs/microscopy.md#output-csv-schema).
+
+**Analysis.** `load(data_path, platemap_path=None, sample=DEFAULT_SAMPLE_COUNT, minutes_per_timepoint=None)` reads `.csv` or `.parquet`, local or over HTTPS (URLs are detected before any `Path()` conversion, and remote parquet needs the browser-like `User-Agent` in `PARQUET_STORAGE_OPTIONS`); an unknown extension returns `None` rather than raising. A platemap is inner-merged on `Well` with plain `pd.read_csv` — not yet the library reader in [instruments/platemap.py](src/cdk/instruments/platemap.py) — and wells it fails to match are named in a warning, since an inner join dropping every row otherwise reads as an empty dataset. `minutes_per_timepoint` derives a `Time (min)` column that every plot then uses as its x axis.
+
+**Axis resolution.** Every plot takes `hue`, `facet`, `time` and `value`, each `None` by default, so one call works with or without a platemap: `plot_quantile_ribbon(data)` groups by `Well`, `plot_quantile_ribbon(data, hue="Osmolarity (mM)", facet="Lipid")` crosses the two factors. Unset, `hue` resolves through `label_column` (`Name` if a platemap was merged, else `Well`), `time` through `time_column` (`Time (min)` if present, else `Timepoint`), `value` through `intensity_column` (the first channel found in the `Intensity Mean (…)` columns — the reporter). `facet` is never guessed. `analysis.py` also owns the column and channel naming (`DIAMETER_COLUMN`, `INTENSITY_COLUMN`, `channels`, `factor_levels`, `factor_palette`, `quantile_table`, `positive_gate`) that `segmentation_qc` imports from it; it is the lowest module in the package and imports nothing from it.
+
+**Plots.** `plot_summary`, `plot_size`, `plot_intensity`, `plot_fogplot`, `plot_fogplot_compare` (overviews and per-object scatter), plus `plot_quantile_ribbon`, `plot_ecdf`, `plot_positive_fraction`, `plot_size_expression` (distributions and gated populations) and `plot_qc` (**acquisition** QC — membrane bleaching and object count, not to be confused with `plot_cell_grid`'s segmentation QC). All return their figure, and all take `title=` to replace the derived figure title (`""` for none) — set it there rather than on the returned figure, since `fig.suptitle()` afterwards resets the size and position each plot tuned. They all exit through `_finish`, which is where the DPI and that title are applied. See [docs/microscopy.md](docs/microscopy.md#plotting).
 
 ## Code Style
 
