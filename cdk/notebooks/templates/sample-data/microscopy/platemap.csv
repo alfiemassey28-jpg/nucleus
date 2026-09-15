@@ -1,0 +1,16 @@
+Well,Date,Experiment,Full_Name,Type,Name,Osmolarity (mM)
+I16,2026-08-26,20260826-Diff lipids with diff osmolarity,820 mM - POPC + Chol,Sample,POPC + Chol,820
+I17,2026-08-26,20260826-Diff lipids with diff osmolarity,720 mM - POPC + Chol,Sample,POPC + Chol,720
+I18,2026-08-26,20260826-Diff lipids with diff osmolarity,620 mM - POPC + Chol,Sample,POPC + Chol,620
+I19,2026-08-26,20260826-Diff lipids with diff osmolarity,520 mM - POPC + Chol,Sample,POPC + Chol,520
+I20,2026-08-26,20260826-Diff lipids with diff osmolarity,420 mM - POPC + Chol,Sample,POPC + Chol,420
+J16,2026-08-26,20260826-Diff lipids with diff osmolarity,820 mM - POPC + Chol + DSPC,Sample,POPC + Chol + DSPC,820
+J17,2026-08-26,20260826-Diff lipids with diff osmolarity,720 mM - POPC + Chol + DSPC,Sample,POPC + Chol + DSPC,720
+J18,2026-08-26,20260826-Diff lipids with diff osmolarity,620 mM - POPC + Chol + DSPC,Sample,POPC + Chol + DSPC,620
+J19,2026-08-26,20260826-Diff lipids with diff osmolarity,520 mM - POPC + Chol + DSPC,Sample,POPC + Chol + DSPC,520
+J20,2026-08-26,20260826-Diff lipids with diff osmolarity,420 mM - POPC + Chol + DSPC,Sample,POPC + Chol + DSPC,420
+K16,2026-08-26,20260826-Diff lipids with diff osmolarity,820 mM - POPC + Chol + EggSM,Sample,POPC + Chol + EggSM,820
+K17,2026-08-26,20260826-Diff lipids with diff osmolarity,720 mM - POPC + Chol + EggSM,Sample,POPC + Chol + EggSM,720
+K18,2026-08-26,20260826-Diff lipids with diff osmolarity,620 mM - POPC + Chol + EggSM,Sample,POPC + Chol + EggSM,620
+K19,2026-08-26,20260826-Diff lipids with diff osmolarity,520 mM - POPC + Chol + EggSM,Sample,POPC + Chol + EggSM,520
+K20,2026-08-26,20260826-Diff lipids with diff osmolarity,420 mM - POPC + Chol + EggSM,Sample,POPC + Chol + EggSM,420
